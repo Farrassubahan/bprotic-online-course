@@ -48,7 +48,7 @@ const courseData = {
                 </div>
                 
                 <div class="row mt-4">
-                    <div class="col-md-6 mb-3">
+                    <div class="col-12 mb-4">
                         <div class="p-4 bg-dark-lighter border border-secondary rounded h-100">
                             <h6 class="text-secondary fw-bold mb-3"><i class="bi bi-code-slash me-2"></i>Contoh Kode (index.php):</h6>
                             <pre><code class="language-php">&lt;?php
@@ -57,7 +57,7 @@ echo "Halo, Software Development!";
 ?&gt;</code></pre>
                         </div>
                     </div>
-                    <div class="col-md-6 mb-3">
+                    <div class="col-12 mb-4">
                         <div class="p-4 bg-dark border border-info rounded h-100 d-flex flex-column">
                             <h6 class="text-info fw-bold mb-3"><i class="bi bi-window me-2"></i>Hasil di Browser:</h6>
                             <div class="flex-grow-1 d-flex align-items-center justify-content-center bg-white text-dark rounded p-3 fs-5 fw-bold shadow-inner">
@@ -77,7 +77,7 @@ echo "Halo, Software Development!";
                 <p class="text-light-50 fs-5">Variabel di PHP wajib diawali dengan tanda dollar <code>$</code>. Digunakan untuk menyimpan nilai di memori (seperti teks atau angka) agar dapat dipanggil berulang kali.</p>
                 
                 <div class="row mt-4">
-                    <div class="col-md-6 mb-3">
+                    <div class="col-12 mb-4">
                         <div class="p-4 bg-dark-lighter border border-secondary rounded h-100">
                             <h6 class="text-secondary fw-bold mb-3"><i class="bi bi-code-slash me-2"></i>Contoh Kode:</h6>
                             <pre><code class="language-php">&lt;?php
@@ -90,7 +90,7 @@ echo $price;
 ?&gt;</code></pre>
                         </div>
                     </div>
-                    <div class="col-md-6 mb-3">
+                    <div class="col-12 mb-4">
                         <div class="p-4 bg-dark border border-info rounded h-100 d-flex flex-column">
                             <h6 class="text-info fw-bold mb-3"><i class="bi bi-window me-2"></i>Hasil di Browser:</h6>
                             <div class="flex-grow-1 bg-white text-dark rounded p-3 font-monospace shadow-inner fs-5">
@@ -110,7 +110,7 @@ echo $price;
                 <p class="text-light-50 fs-5">Array adalah wadah khusus yang memungkinkan kita menyimpan <strong>banyak data</strong> sekaligus. Untuk menampilkan semua datanya, cara termudahnya adalah menggunakan perulangan <code>foreach</code>.</p>
                 
                 <div class="row mt-4">
-                    <div class="col-md-6 mb-3">
+                    <div class="col-12 mb-4">
                         <div class="p-4 bg-dark-lighter border border-secondary rounded h-100">
                             <h6 class="text-secondary fw-bold mb-3"><i class="bi bi-code-slash me-2"></i>Contoh Kode:</h6>
                             <pre><code class="language-php">&lt;?php
@@ -127,7 +127,7 @@ foreach ($products as $item) {
 ?&gt;</code></pre>
                         </div>
                     </div>
-                    <div class="col-md-6 mb-3">
+                    <div class="col-12 mb-4">
                         <div class="p-4 bg-dark border border-info rounded h-100 d-flex flex-column">
                             <h6 class="text-info fw-bold mb-3"><i class="bi bi-window me-2"></i>Hasil di Browser:</h6>
                             <div class="flex-grow-1 bg-white text-dark rounded p-3 font-monospace shadow-inner fs-5">
@@ -147,7 +147,7 @@ foreach ($products as $item) {
                 <p class="text-light-50 fs-5">Selain fungsi bawaan PHP, kita dapat membuat blok fungsi sendiri agar kode bisa digunakan berulang-ulang tanpa perlu menuliskannya dari awal.</p>
                 
                 <div class="row mt-4">
-                    <div class="col-md-6 mb-3">
+                    <div class="col-12 mb-4">
                         <div class="p-4 bg-dark-lighter border border-secondary rounded h-100">
                             <h6 class="text-secondary fw-bold mb-3"><i class="bi bi-code-slash me-2"></i>Contoh Kode:</h6>
                             <pre><code class="language-php">&lt;?php
@@ -160,7 +160,7 @@ echo formatHarga(8000000);
 ?&gt;</code></pre>
                                                         </div>
                     </div>
-                    <div class="col-md-6 mb-3">
+                    <div class="col-12 mb-4">
                         <div class="p-4 bg-dark border border-info rounded h-100 d-flex flex-column">
                             <h6 class="text-info fw-bold mb-3"><i class="bi bi-window me-2"></i>Hasil di Browser:</h6>
                             <div class="flex-grow-1 d-flex align-items-center bg-white text-dark rounded p-3 font-monospace shadow-inner fs-4 fw-bold">
@@ -191,34 +191,125 @@ echo formatHarga(8000000);
             </section>
         `
     },
+
     "2": {
         title: "Form, Database & CRUD PHP",
         content: `
-            <!-- Form & POST -->
+            <!-- Pengantar Materi -->
+            <section class="mb-5">
+                <div class="card bg-dark-lighter border-info shadow-sm">
+                    <div class="card-body p-4">
+                        <h4 class="fw-bold text-info mb-3"><i class="bi bi-info-circle-fill me-2"></i>Apa yang akan kita pelajari?</h4>
+                        <p class="text-light-50 fs-5 mb-3">Pada pertemuan kedua ini, kita akan membawa aplikasi PHP kita ke tingkat selanjutnya dengan membuatnya menjadi sistem yang interaktif. Kita akan belajar cara berinteraksi dengan pengguna dan mengelola data ke dalam database. Materi hari ini mencakup:</p>
+                        <ul class="text-light-50 fs-5 mb-0 lh-lg">
+                            <li><strong>Form Handling:</strong> Menerima dan menangkap input dari pengguna menggunakan form HTML.</li>
+                            <li><strong>Validasi Data:</strong> Memastikan data yang diinput aman dan tidak kosong.</li>
+                            <li><strong>Koneksi Database:</strong> Menghubungkan skrip PHP dengan database MySQL (via phpMyAdmin).</li>
+                            <li><strong>Operasi CRUD:</strong> Inti dari semua aplikasi web modern! Kita akan belajar cara <strong class="text-white">C</strong>reate (menambah), <strong class="text-white">R</strong>ead (menampilkan), <strong class="text-white">U</strong>pdate (mengubah), dan <strong class="text-white">D</strong>elete (menghapus) data.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tahap 1: Setup Database MySQL di Laragon -->
             <section class="mb-5 pb-4 border-bottom border-secondary">
                 <div class="d-flex align-items-center mb-3">
                     <span class="badge bg-primary fs-6 me-3">Tahap 1</span>
-                    <h2 class="fw-bold mb-0 text-primary">Form HTML & Method POST</h2>
+                    <h2 class="fw-bold mb-0 text-primary">Setup Database MySQL (phpMyAdmin)</h2>
                 </div>
-                <p class="text-light-50 fs-5">Untuk menerima input dari user, kita menggunakan <strong>Form HTML</strong>. Di PHP, sangat disarankan menggunakan Method <code>POST</code> agar data yang dikirim lebih rahasia dan tidak terekspos di URL (seperti pada <code>GET</code>).</p>
+                <p class="text-light-50 fs-5">Sebelum kita mulai <em>ngoding</em>, kita wajib menyiapkan tempat penyimpanan datanya terlebih dahulu. Kita akan menggunakan <strong>MySQL</strong> melalui <em>interface</em> <strong>phpMyAdmin</strong> yang sudah ada di dalam Laragon.</p>
+                
+                <div class="card bg-dark border-info mb-4 shadow-sm">
+                    <div class="card-body p-4">
+                        <h5 class="fw-bold text-info mb-3"><i class="bi bi-database-gear me-2"></i>Langkah-langkah Membuat Database & Tabel:</h5>
+                        <ol class="text-light-50 lh-lg fs-6 mb-0">
+                            <li>Buka aplikasi Laragon, dan pastikan server sudah berjalan (klik <strong>Start All</strong> jika belum).</li>
+                            <li>Klik tombol <strong>Database</strong> di menu aplikasi Laragon (otomatis akan membuka browser menuju <code>http://localhost/phpmyadmin</code>).</li>
+                            <li>Login dengan username: <strong>root</strong> (password biarkan kosong).</li>
+                            <li>Buat database baru: Klik menu <strong>New</strong> di sebelah kiri, ketik nama database <code>db_toko</code>, lalu klik <strong>Create</strong>.</li>
+                            <li>Setelah berhasil, klik database <code>db_toko</code> di panel kiri, lalu buat tabel baru bernama <code>products</code> dengan jumlah kolom <strong>3</strong>, tekan <strong>Go/Create</strong>.</li>
+                            <li>Isi detail ketiga kolom tersebut sebagai berikut:
+                                <ul class="mt-2 mb-2 bg-dark-lighter p-3 rounded">
+                                    <li><strong>id</strong> : tipe <code>INT</code>, centang opsi <code>A_I</code> (Auto Increment), dan set sebagai <code>Primary Key</code>.</li>
+                                    <li><strong>name</strong> : tipe <code>VARCHAR</code>, panjang nilai (length) <code>100</code>.</li>
+                                    <li><strong>price</strong> : tipe <code>INT</code>.</li>
+                                </ul>
+                            </li>
+                            <li>Klik tombol <strong>Save</strong> di bagian bawah. Database dan tabel kamu sekarang sudah siap digunakan!</li>
+                        </ol>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tahap 2: Koneksi DB -->
+            <section class="mb-5 pb-4 border-bottom border-secondary">
+                <div class="d-flex align-items-center mb-3">
+                    <span class="badge bg-primary fs-6 me-3">Tahap 2</span>
+                    <h2 class="fw-bold mb-0 text-primary">Koneksi PHP ke MySQL</h2>
+                </div>
+                <p class="text-light-50 fs-5">Setelah tabel siap, kita perlu membuat "jembatan" agar file PHP kita bisa berkomunikasi dengan MySQL. Buatlah file baru bernama <code>koneksi.php</code>.</p>
                 
                 <div class="row mt-4">
-                    <div class="col-md-6 mb-3">
-                        <div class="p-4 bg-dark-lighter border border-secondary rounded h-100">
-                            <h6 class="text-secondary fw-bold mb-3"><i class="bi bi-code-slash me-2"></i>Contoh Kode (index.php):</h6>
-                            <pre><code class="language-html">&lt;!-- Atribut name sangat krusial sebagai identitas data --&gt;
-&lt;form action="proses.php" method="POST"&gt;
-    &lt;label&gt;Nama Produk:&lt;/label&gt;
-    &lt;input type="text" name="name" required&gt;
-    
-    &lt;label&gt;Harga:&lt;/label&gt;
-    &lt;input type="number" name="price" required&gt;
-    
-    &lt;button type="submit" name="submit"&gt;Simpan&lt;/button&gt;
-&lt;/form&gt;</code></pre>
+                    <div class="col-12">
+                        <div class="p-4 bg-dark-lighter border border-secondary rounded">
+                            <h6 class="text-secondary fw-bold mb-3"><i class="bi bi-code-slash me-2"></i>Contoh Kode (koneksi.php):</h6>
+                            <pre><code class="language-php">&lt;?php
+$host = "localhost";
+$user = "root";     // Default username phpMyAdmin di Laragon
+$pass = "";         // Password default selalu kosong
+$db   = "db_toko";  // Pastikan nama DB ini persis seperti yang kita buat tadi
+
+// Membuka koneksi menggunakan fungsi bawaan PHP
+$conn = mysqli_connect($host, $user, $pass, $db);
+
+// Cek jika gagal terhubung
+if (!$conn) {
+    die("Koneksi gagal: " . mysqli_connect_error());
+}
+// echo "Koneksi Berhasil!"; // (Hapus atau komentari baris ini jika web sudah live)
+?&gt;</code></pre>
+                            <p class="text-info mt-3 mb-0 fs-6"><i class="bi bi-info-circle-fill me-2"></i><strong>Cara Memakai Koneksi:</strong> Nantinya, file <code>koneksi.php</code> ini akan kita panggil di file-file lain menggunakan instruksi <code>include 'koneksi.php';</code> setiap kali kita butuh mengambil atau menyimpan data ke database.</p>
                         </div>
                     </div>
-                    <div class="col-md-6 mb-3">
+                </div>
+            </section>
+
+            <!-- Tahap 3: Form & POST -->
+            <section class="mb-5 pb-4 border-bottom border-secondary">
+                <div class="d-flex align-items-center mb-3">
+                    <span class="badge bg-primary fs-6 me-3">Tahap 3</span>
+                    <h2 class="fw-bold mb-0 text-primary">Form HTML & Method POST</h2>
+                </div>
+                <p class="text-light-50 fs-5">Selanjutnya, kita butuh sebuah halaman antarmuka (UI) untuk user menginput data. Buatlah file <code>index.php</code> yang berisikan <strong>Form HTML</strong>. Di PHP, sangat disarankan menggunakan Method <code>POST</code> agar data yang dikirim lebih rahasia.</p>
+                
+                <div class="row mt-4">
+                    <div class="col-12 mb-4">
+                        <div class="p-4 bg-dark-lighter border border-secondary rounded h-100">
+                            <h6 class="text-secondary fw-bold mb-3"><i class="bi bi-code-slash me-2"></i>Contoh Kode (index.php):</h6>
+                            <pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang="id"&gt;
+&lt;head&gt;
+    &lt;title&gt;Aplikasi CRUD Toko&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h2&gt;Tambah Produk Baru&lt;/h2&gt;
+    &lt;!-- Atribut action="proses.php" berarti form akan dikirim ke file tersebut --&gt;
+    &lt;form action="proses.php" method="POST"&gt;
+        &lt;label&gt;Nama Produk:&lt;/label&gt;&lt;br&gt;
+        &lt;input type="text" name="name" required&gt;
+        &lt;br&gt;&lt;br&gt;
+        
+        &lt;label&gt;Harga:&lt;/label&gt;&lt;br&gt;
+        &lt;input type="number" name="price" required&gt;
+        &lt;br&gt;&lt;br&gt;
+        
+        &lt;button type="submit" name="submit"&gt;Simpan Data&lt;/button&gt;
+    &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                        </div>
+                    </div>
+                    <div class="col-12 mb-4">
                         <div class="p-4 bg-dark border border-info rounded h-100 d-flex flex-column">
                             <h6 class="text-info fw-bold mb-3"><i class="bi bi-window me-2"></i>Hasil di Browser:</h6>
                             <div class="flex-grow-1 bg-white text-dark rounded p-4 shadow-inner">
@@ -233,146 +324,189 @@ echo formatHarga(8000000);
                 </div>
             </section>
 
-            <!-- Menangkap Data -->
+            <!-- Tahap 4: Menangkap & Insert -->
             <section class="mb-5 pb-4 border-bottom border-secondary">
                 <div class="d-flex align-items-center mb-3">
-                    <span class="badge bg-primary fs-6 me-3">Tahap 2</span>
-                    <h2 class="fw-bold mb-0 text-primary">Menangkap Data ($_POST) & Validasi</h2>
+                    <span class="badge bg-primary fs-6 me-3">Tahap 4</span>
+                    <h2 class="fw-bold mb-0 text-primary">C (Create) - Menangkap Data & Insert</h2>
                 </div>
-                <p class="text-light-50 fs-5">Di file tujuan pengiriman form (misalnya <code>proses.php</code>), kita bisa mengambil nilai inputannya dengan Superglobal Variable <code>$_POST</code>. Kita juga wajib melakukan validasi (misalnya dengan <code>if/else</code>) agar form tidak diproses jika kosong.</p>
+                <p class="text-light-50 fs-5">Buat file baru bernama <code>proses.php</code>. Di sinilah kita "menangkap" input user (dengan <code>$_POST</code>), memvalidasinya, lalu menyimpannya secara permanen ke database kita menggunakan query <code>INSERT INTO</code>.</p>
                 
                 <div class="row mt-4">
-                    <div class="col-md-6 mb-3">
+                    <div class="col-12">
                         <div class="p-4 bg-dark-lighter border border-secondary rounded h-100">
                             <h6 class="text-secondary fw-bold mb-3"><i class="bi bi-code-slash me-2"></i>Contoh Kode (proses.php):</h6>
                             <pre><code class="language-php">&lt;?php
-// Cek apakah tombol submit sudah ditekan
+// 1. Panggil koneksi database
+include 'koneksi.php';
+
+// 2. Cek apakah tombol submit sudah ditekan
 if (isset($_POST['submit'])) {
+    // 3. Tangkap datanya dari form
     $nama = $_POST['name'];
     $harga = $_POST['price'];
 
-    // Validasi sederhana menggunakan If/Else
+    // 4. Validasi data agar tidak kosong
     if (empty($nama) || empty($harga)) {
-        echo "Error: Data tidak boleh ada yang kosong!";
+        echo "Error: Data tidak boleh kosong!";
     } else {
-        echo "Sukses: Produk $nama (Rp $harga) berhasil diterima.";
+        // 5. Eksekusi Query INSERT ke tabel products
+        $sql = "INSERT INTO products (name, price) VALUES ('$nama', '$harga')";
+        
+        if (mysqli_query($conn, $sql)) {
+            echo "Sukses: Data berhasil disimpan! &lt;br&gt;";
+            echo "&lt;a href='index.php'&gt;Kembali ke Halaman Utama&lt;/a&gt;";
+        } else {
+            echo "Error: " . mysqli_error($conn);
+        }
     }
 }
 ?&gt;</code></pre>
                         </div>
                     </div>
-                    <div class="col-md-6 mb-3">
+                </div>
+            </section>
+
+            <!-- Tahap 5: Menampilkan Data -->
+            <section class="mb-5 pb-4 border-bottom border-secondary">
+                <div class="d-flex align-items-center mb-3">
+                    <span class="badge bg-primary fs-6 me-3">Tahap 5</span>
+                    <h2 class="fw-bold mb-0 text-primary">R (Read) - Menampilkan Data (SELECT)</h2>
+                </div>
+                <p class="text-light-50 fs-5">Setelah data sukses tersimpan, kita harus bisa menampilkannya kembali ke layar. Kita biasanya meletakkannya di bawah Form pada file <code>index.php</code> menggunakan perulangan <code>while</code>.</p>
+                
+                <div class="row mt-4">
+                    <div class="col-12 mb-4">
+                        <div class="p-4 bg-dark-lighter border border-secondary rounded h-100">
+                            <h6 class="text-secondary fw-bold mb-3"><i class="bi bi-list-columns me-2"></i>Menampilkan Data (index.php):</h6>
+                            <pre><code class="language-php">&lt;!DOCTYPE html&gt;
+&lt;html lang="id"&gt;
+&lt;body&gt;
+    &lt;!-- Asumsikan Form Input ada di bagian atas ini --&gt;
+    &lt;hr&gt;
+
+    &lt;h2&gt;Daftar Produk&lt;/h2&gt;
+    &lt;table border="1" cellpadding="10" cellspacing="0"&gt;
+        &lt;tr&gt;
+            &lt;th&gt;Nama Produk&lt;/th&gt;
+            &lt;th&gt;Harga&lt;/th&gt;
+            &lt;th&gt;Aksi&lt;/th&gt;
+        &lt;/tr&gt;
+        &lt;?php
+        include 'koneksi.php';
+        $result = mysqli_query($conn, "SELECT * FROM products");
+        
+        while ($row = mysqli_fetch_assoc($result)) {
+            echo "&lt;tr&gt;";
+            echo "&lt;td&gt;" . $row['name'] . "&lt;/td&gt;";
+            echo "&lt;td&gt;Rp " . number_format($row['price'], 0, ',', '.') . "&lt;/td&gt;";
+            echo "&lt;td&gt;
+                    &lt;a href='edit.php?id=" . $row['id'] . "'&gt;Edit&lt;/a&gt; | 
+                    &lt;a href='hapus.php?id=" . $row['id'] . "' onclick='return confirm(\"Yakin ingin menghapus?\")'&gt;Hapus&lt;/a&gt;
+                  &lt;/td&gt;";
+            echo "&lt;/tr&gt;";
+        }
+        ?&gt;
+    &lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                        </div>
+                    </div>
+                    <div class="col-12 mb-4">
                         <div class="p-4 bg-dark border border-info rounded h-100 d-flex flex-column">
-                            <h6 class="text-info fw-bold mb-3"><i class="bi bi-window me-2"></i>Jika Form Disubmit:</h6>
-                            <div class="flex-grow-1 d-flex align-items-center bg-white text-success rounded p-3 font-monospace shadow-inner fs-5 fw-bold">
-                                Sukses: Produk Laptop (Rp 8000000) berhasil diterima.
+                            <h6 class="text-info fw-bold mb-3"><i class="bi bi-window me-2"></i>Hasil Output Tabel List:</h6>
+                            <div class="flex-grow-1 bg-white text-dark rounded p-4 shadow-inner overflow-auto">
+                                <table class="table table-bordered table-striped mb-0">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>Nama Produk</th>
+                                            <th>Harga</th>
+                                            <th>Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Laptop</td>
+                                            <td>Rp 8.000.000</td>
+                                            <td><a href="#" class="text-decoration-none">Edit</a> | <a href="#" class="text-danger text-decoration-none">Hapus</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Mouse</td>
+                                            <td>Rp 150.000</td>
+                                            <td><a href="#" class="text-decoration-none">Edit</a> | <a href="#" class="text-danger text-decoration-none">Hapus</a></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- Koneksi DB -->
+            <!-- Tahap 6: Update Delete -->
             <section class="mb-5 pb-4 border-bottom border-secondary">
                 <div class="d-flex align-items-center mb-3">
-                    <span class="badge bg-primary fs-6 me-3">Tahap 3</span>
-                    <h2 class="fw-bold mb-0 text-primary">Koneksi PHP ke MySQL</h2>
-                </div>
-                <p class="text-light-50 fs-5">Pastikan kamu sudah membuat database di <strong>phpMyAdmin</strong>. Gunakan instruksi bawaan <code>mysqli_connect()</code> untuk menghubungkan skrip PHP ke database yang bersangkutan.</p>
-                
-                <div class="row mt-4">
-                    <div class="col-12">
-                        <div class="p-4 bg-dark-lighter border border-secondary rounded">
-                            <h6 class="text-secondary fw-bold mb-3"><i class="bi bi-code-slash me-2"></i>Contoh Kode (koneksi.php):</h6>
-                            <pre><code class="language-php">&lt;?php
-$host = "localhost";
-$user = "root";     // Default username XAMPP/Laragon
-$pass = "";         // Password default kosong
-$db   = "db_toko";  // Pastikan nama DB ini persis seperti di phpMyAdmin
-
-// Membuka koneksi
-$conn = mysqli_connect($host, $user, $pass, $db);
-
-// Cek jika gagal terhubung
-if (!$conn) {
-    die("Koneksi gagal: " . mysqli_connect_error());
-}
-echo "Koneksi Berhasil!";
-?&gt;</code></pre>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Create Read -->
-            <section class="mb-5 pb-4 border-bottom border-secondary">
-                <div class="d-flex align-items-center mb-3">
-                    <span class="badge bg-primary fs-6 me-3">Tahap 4</span>
-                    <h2 class="fw-bold mb-0 text-primary">CRUD: Menambah & Menampilkan Data</h2>
-                </div>
-                <p class="text-light-50 fs-5">Ini adalah esensi dari <strong>C</strong>reate dan <strong>R</strong>ead dalam konsep CRUD. Kita menggunakan SQL <code>INSERT INTO</code> untuk menyimpan, dan <code>SELECT</code> untuk membaca (menampilkan) data.</p>
-                
-                <div class="row mt-4">
-                    <div class="col-md-6 mb-3">
-                        <div class="p-4 bg-dark-lighter border border-secondary rounded h-100">
-                            <h6 class="text-secondary fw-bold mb-3"><i class="bi bi-database-add me-2"></i>Insert Data (Create):</h6>
-                            <pre><code class="language-php">&lt;?php
-// Mengeksekusi Query INSERT
-$sql = "INSERT INTO products (name, price) 
-        VALUES ('$nama', '$harga')";
-
-mysqli_query($conn, $sql);
-?&gt;</code></pre>
-                        </div>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <div class="p-4 bg-dark-lighter border border-secondary rounded h-100">
-                            <h6 class="text-secondary fw-bold mb-3"><i class="bi bi-list-columns me-2"></i>Menampilkan Data (Read):</h6>
-                            <pre><code class="language-php">&lt;?php
-// Menarik data, lalu diproses berulang dengan while()
-$result = mysqli_query($conn, "SELECT * FROM products");
-
-while ($row = mysqli_fetch_assoc($result)) {
-    echo $row['name'] . " - Rp " . $row['price'] . "&lt;br&gt;";
-}
-?&gt;</code></pre>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Update Delete -->
-            <section class="mb-5 pb-4 border-bottom border-secondary">
-                <div class="d-flex align-items-center mb-3">
-                    <span class="badge bg-primary fs-6 me-3">Tahap 5</span>
-                    <h2 class="fw-bold mb-0 text-primary">CRUD: Mengubah & Menghapus Data</h2>
+                    <span class="badge bg-primary fs-6 me-3">Tahap 6</span>
+                    <h2 class="fw-bold mb-0 text-primary">U & D - Update dan Delete</h2>
                 </div>
                 <p class="text-light-50 fs-5">Untuk <strong>U</strong>pdate dan <strong>D</strong>elete, kita perlu mengidentifikasi baris spesifik mana yang diubah. Biasanya kita menyisipkan ID data melalui URL, yang lalu ditangkap menggunakan <code>$_GET</code>.</p>
                 
                 <div class="row mt-4">
-                    <div class="col-md-6 mb-3">
+                    <div class="col-12 mb-4">
                         <div class="p-4 bg-dark-lighter border border-secondary rounded h-100">
-                            <h6 class="text-secondary fw-bold mb-3"><i class="bi bi-pencil-square me-2"></i>Update Data:</h6>
+                            <h6 class="text-secondary fw-bold mb-3"><i class="bi bi-pencil-square me-2"></i>Update Data (edit.php):</h6>
                             <pre><code class="language-php">&lt;?php
-$id = $_POST['id']; // ID dari form hidden
-$nama_baru = $_POST['name'];
+include 'koneksi.php';
 
-$sql = "UPDATE products SET name='$nama_baru' 
-        WHERE id='$id'";
+// 1. Tangkap ID dan ambil data lama dari DB
+$id = $_GET['id'];
+$result = mysqli_query($conn, "SELECT * FROM products WHERE id='$id'");
+$data = mysqli_fetch_assoc($result);
 
-mysqli_query($conn, $sql);
-?&gt;</code></pre>
+// 2. Jika form disubmit, lakukan UPDATE
+if (isset($_POST['update'])) {
+    $nama = $_POST['name'];
+    $harga = $_POST['price'];
+
+    mysqli_query($conn, "UPDATE products SET name='$nama', price='$harga' WHERE id='$id'");
+    header("Location: index.php"); // Kembali ke halaman utama
+    exit;
+}
+?&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;body&gt;
+    &lt;h2&gt;Edit Produk&lt;/h2&gt;
+    &lt;form action="" method="POST"&gt;
+        &lt;label&gt;Nama:&lt;/label&gt;
+        &lt;input type="text" name="name" value="&lt;?php echo $data['name']; ?&gt;"&gt;
+        &lt;br&gt;&lt;br&gt;
+        &lt;label&gt;Harga:&lt;/label&gt;
+        &lt;input type="number" name="price" value="&lt;?php echo $data['price']; ?&gt;"&gt;
+        &lt;br&gt;&lt;br&gt;
+        &lt;button type="submit" name="update"&gt;Simpan Perubahan&lt;/button&gt;
+    &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
                         </div>
                     </div>
-                    <div class="col-md-6 mb-3">
+                    <div class="col-12 mb-4">
                         <div class="p-4 bg-dark-lighter border border-secondary rounded h-100">
-                            <h6 class="text-secondary fw-bold mb-3"><i class="bi bi-trash3 me-2"></i>Delete Data ($_GET):</h6>
+                            <h6 class="text-secondary fw-bold mb-3"><i class="bi bi-trash3 me-2"></i>Delete Data (hapus.php):</h6>
                             <pre><code class="language-php">&lt;?php
-// Menangkap parameter dari URL (misal: hapus.php?id=1)
+// Panggil koneksi
+include 'koneksi.php';
+
+// Menangkap parameter ID dari URL (misal: hapus.php?id=1)
 $id = $_GET['id'];
 
+// Eksekusi penghapusan data
 $sql = "DELETE FROM products WHERE id='$id'";
 mysqli_query($conn, $sql);
+
+// Otomatis kembalikan user ke halaman utama setelah data dihapus
+header("Location: index.php");
+exit;
 ?&gt;</code></pre>
                         </div>
                     </div>
@@ -400,4 +534,6 @@ mysqli_query($conn, $sql);
             </section>
         `
     }
+
+    
 };
