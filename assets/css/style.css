@@ -1,0 +1,88 @@
+:root {
+    --bg-dark: #0f172a;
+    --bg-darker: #020617;
+    --bg-dark-lighter: #1e293b;
+    --border-color: #334155;
+    --primary: #38bdf8;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    line-height: 1.6;
+}
+
+.text-light-50 { color: var(--text-muted); }
+.bg-dark-lighter { background-color: var(--bg-dark-lighter); }
+
+.bg-glass {
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(12px);
+}
+
+.text-gradient {
+    background: linear-gradient(to right, #38bdf8, #818cf8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-section {
+    padding: 140px 0 60px;
+    background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.content-wrapper {
+    background: var(--bg-darker);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 3rem;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+@media (max-width: 768px) {
+    .content-wrapper {
+        padding: 1.5rem;
+    }
+}
+
+/* Typography */
+h1, h2, h3, h4, h5 {
+    letter-spacing: -0.5px;
+}
+
+/* Code Blocks */
+pre {
+    margin: 0;
+    background: transparent !important;
+}
+.hljs {
+    background: transparent !important;
+    padding: 0 !important;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.95rem;
+}
+code {
+    font-family: 'Fira Code', monospace;
+    color: #38bdf8;
+    background: rgba(56, 189, 248, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.shadow-inner {
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* SweetAlert Customization */
+.swal2-popup {
+    background: var(--bg-dark-lighter) !important;
+    color: var(--text-main) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 16px !important;
+}
+.swal2-title { color: var(--text-main) !important; }
+.swal2-html-container { color: var(--text-muted) !important; }
