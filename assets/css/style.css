@@ -8,7 +8,7 @@
     --text-muted: #94a3b8;
 }
 
-body {
+body {  
     background-color: var(--bg-dark);
     color: var(--text-main);
     font-family: 'Plus Jakarta Sans', sans-serif;
@@ -86,3 +86,89 @@ code {
 }
 .swal2-title { color: var(--text-main) !important; }
 .swal2-html-container { color: var(--text-muted) !important; }
+
+/* Track Badges & Cards */
+.badge-web {
+    background: linear-gradient(135deg, #0284c7, #38bdf8);
+    color: #fff;
+}
+.badge-mobile {
+    background: linear-gradient(135deg, #7c3aed, #a855f7);
+    color: #fff;
+}
+
+.portal-card {
+    background: #0f172a;
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+.portal-card:hover {
+    transform: translateY(-6px);
+    border-color: #38bdf8;
+    box-shadow: 0 20px 35px -10px rgba(56, 189, 248, 0.25);
+}
+.portal-card.mobile-theme:hover {
+    border-color: #a855f7;
+    box-shadow: 0 20px 35px -10px rgba(168, 85, 247, 0.25);
+}
+
+/* Framework Switcher */
+.framework-switch .btn-check:checked + .btn {
+    background: linear-gradient(135deg, #7c3aed, #6366f1);
+    color: #fff;
+    border-color: #a855f7;
+    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35);
+}
+
+/* Smartphone Device Mockup for Mobile Course Previews */
+.phone-mockup {
+    max-width: 360px;
+    margin: 0 auto;
+    background: #020617;
+    border: 10px solid #1e293b;
+    border-radius: 40px;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px #334155;
+    position: relative;
+}
+.phone-notch {
+    width: 120px;
+    height: 18px;
+    background: #1e293b;
+    margin: 0 auto;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.phone-notch-camera {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #0f172a;
+}
+.phone-screen {
+    padding: 16px;
+    min-height: 480px;
+    background: #090d16;
+    color: #f8fafc;
+    font-size: 0.9rem;
+}
+
+/* Responsive Navbar Card Collapse on Mobile/Tablet */
+@media (max-width: 991.98px) {
+    .navbar-collapse {
+        background: #0f172a;
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 14px 18px;
+        margin-top: 10px;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+    }
+}
+
+

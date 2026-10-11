@@ -3,78 +3,329 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BPROTIC - Materi Web</title>
+    <title>BPROTIC - Portal Silabus Kursus Web & Mobile</title>
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <!-- Highlight.js CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        .portal-hero {
+            padding: 130px 0 70px;
+            background: radial-gradient(circle at 50% 20%, #1e1b4b 0%, #0f172a 70%);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .track-badge-web {
+            background: linear-gradient(135deg, #0284c7, #38bdf8);
+            color: #fff;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+        }
+        .track-badge-mobile {
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            color: #fff;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+        }
+        .week-pill {
+            background: #1e293b;
+            border: 1px solid #334155;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            color: #cbd5e1;
+            transition: all 0.2s ease;
+        }
+        .week-pill:hover {
+            border-color: #38bdf8;
+            color: #fff;
+        }
+    </style>
 </head>
 <body>
 
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-glass fixed-top border-bottom border-secondary py-2">
         <div class="container px-4">
-            <a class="navbar-brand fw-bold text-gradient d-flex align-items-center" href="#">
-                <img src="assets/logo-bprotic.png" alt="BPROTIC Logo" style="height: 50px; background-color: rgba(255, 255, 255, 0.9); padding: 6px 12px; border-radius: 10px;" class="me-3 shadow-sm">
-                BPROTIC WEB COURSE
+            <a class="navbar-brand d-flex align-items-center text-decoration-none" href="index.html">
+                <img src="assets/logo-bprotic.png" alt="BPROTIC Logo" style="height: 46px; background-color: rgba(255, 255, 255, 0.95); padding: 5px 10px; border-radius: 10px;" class="me-3 shadow-sm">
+                <div class="d-flex flex-column">
+                    <span class="text-gradient fw-bold" style="font-size: 1.15rem; letter-spacing: -0.5px; line-height: 1.2;">BPROTIC COURSE</span>
+                    <small class="text-secondary" style="font-size: 11px;">Learning Portal</small>
+                </div>
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            
+            <button class="navbar-toggler border-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
+            
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav align-items-center gap-3">
-                    <li class="nav-item">
-                        <select id="weekSelector" class="form-select form-select-sm bg-dark text-light border-secondary">
-                            <option value="1" selected>Pertemuan 1: Setup & Dasar PHP</option>
-                            <option value="2">Pertemuan 2: Form, DB & CRUD PHP</option>
-                            <option value="3">Pertemuan 3: OOP & MVC</option>
-                            <option value="4">Pertemuan 4: Intro Laravel</option>
-                            <option value="5">Pertemuan 5: Laravel CRUD & Eloquent</option>
-                        </select>
-                    </li>
-                </ul>
+                <div class="d-flex flex-row align-items-center justify-content-center gap-2 mt-3 mt-lg-0 py-2 py-lg-0">
+                    <a href="web/index.html" class="btn btn-outline-info btn-sm rounded-pill px-3 py-1">
+                        <i class="bi bi-globe me-1"></i> Silabus Web
+                    </a>
+                    <a href="mobile/index.html" class="btn btn-outline-primary btn-sm rounded-pill px-3 py-1" style="border-color: #a855f7; color: #c084fc;">
+                        <i class="bi bi-phone me-1"></i> Silabus Mobile
+                    </a>
+                </div>
             </div>
         </div>
     </nav>
 
-    <!-- Header Banner -->
-    <div class="hero-section text-center">
-        <div class="container">
-            <span class="badge bg-primary fs-6 mb-3 px-3 py-2 rounded-pill" id="heroBadge">Pertemuan 1</span>
-            <h1 class="display-4 fw-bold text-white mb-3" id="heroTitle">Recap Setup & Dasar PHP</h1>
-            <p class="lead text-light-50 mx-auto" style="max-width: 600px;">Review tentang instalasi local server, sintaks dasar PHP, penggunaan variabel, output, array, serta perulangan sederhana.</p>
+    <!-- Hero Portal -->
+    <div class="portal-hero text-center">
+        <div class="container px-4">
+            <span class="badge bg-secondary px-3 py-2 rounded-pill mb-3 text-info border border-info border-opacity-25">
+                <i class="bi bi-stars me-1"></i> Kurikulum Resmi BPROTIC 2026
+            </span>
+            <h1 class="display-4 fw-bold text-white mb-3">
+                Pilih Jalur Belajar <span class="text-gradient">Software Development</span>
+            </h1>
+            <p class="lead text-light-50 mx-auto mb-4" style="max-width: 680px;">
+                Tersedia dua track kurikulum praktikum lengkap: dari pembuatan backend web dan REST API menggunakan PHP/Laravel, hingga pengembangan aplikasi mobile native menggunakan React Native & Expo.
+            </p>
+            <div class="d-flex justify-content-center gap-3">
+                <a href="#track-cards" class="btn btn-primary px-4 py-2 rounded-pill fw-semibold">
+                    <i class="bi bi-compass me-2"></i>Pilih Jalur
+                </a>
+                <a href="#roadmap-table" class="btn btn-outline-secondary px-4 py-2 rounded-pill text-light">
+                    <i class="bi bi-table me-2"></i>Lihat Roadmap 10 Minggu
+                </a>
+            </div>
         </div>
     </div>
 
-    <!-- Main Content -->
-    <main class="container py-5">
-        <div class="row justify-content-center">
-            <div class="col-lg-10 col-xl-9">
-                <div id="contentArea" class="content-wrapper">
-                    <!-- Content injected via JS -->
+    <!-- Main Content: Dua Pilihan Track -->
+    <main class="container py-5" id="track-cards">
+        <div class="row g-4 justify-content-center">
+            
+            <!-- Card 1: Web Development -->
+            <div class="col-lg-6">
+                <div class="portal-card h-100 p-4 p-md-5 d-flex flex-column">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <span class="badge track-badge-web px-3 py-2 rounded-pill">
+                            <i class="bi bi-globe me-1"></i> WEB TRACK
+                        </span>
+                        <span class="text-secondary small fw-bold">10 Pertemuan</span>
+                    </div>
+
+                    <div class="mb-4">
+                        <h2 class="fw-bold text-white mb-2">Web Development</h2>
+                        <div class="text-info small fw-semibold mb-3">PHP Native • MySQL • Laragon • OOP MVC • Laravel 11 • REST API</div>
+                        <p class="text-light-50 fs-6 lh-base">
+                            Kuasai fundamental pembuatan aplikasi web dari sisi server. Dimulai dari dasar sintaks PHP native, form handling, integrasi basis data MySQL di Laragon, arsitektur OOP & MVC, hingga membangun REST API menggunakan Laravel yang siap dikonsumsi oleh aplikasi mobile.
+                        </p>
+                    </div>
+
+                    <!-- Highlight Features -->
+                    <div class="p-3 rounded-4 mb-4" style="background: rgba(15, 23, 42, 0.7); border: 1px solid #334155;">
+                        <div class="small fw-bold text-info mb-2"><i class="bi bi-check2-circle me-1"></i>Topik Kunci:</div>
+                        <div class="d-flex flex-wrap gap-2">
+                            <span class="week-pill">Minggu 1: Setup Laragon & Dasar PHP</span>
+                            <span class="week-pill">Minggu 2: Form Handling & Database</span>
+                            <span class="week-pill">Minggu 3: CRUD PHP & MySQL</span>
+                            <span class="week-pill">Minggu 4: OOP & MVC Dasar</span>
+                            <span class="week-pill">Minggu 5: Pengenalan Laravel</span>
+                            <span class="week-pill">Minggu 7: REST API Laravel</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-auto pt-3">
+                        <a href="web/index.html" class="btn btn-info w-100 py-3 rounded-3 fw-bold text-dark d-flex align-items-center justify-content-center shadow-sm">
+                            <span>Buka Silabus Web Development</span>
+                            <i class="bi bi-arrow-right-circle-fill ms-2 fs-5"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2: Mobile Development -->
+            <div class="col-lg-6">
+                <div class="portal-card mobile-theme h-100 p-4 p-md-5 d-flex flex-column">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <span class="badge track-badge-mobile px-3 py-2 rounded-pill">
+                            <i class="bi bi-phone me-1"></i> MOBILE TRACK
+                        </span>
+                        <span class="text-secondary small fw-bold">10 Pertemuan</span>
+                    </div>
+
+                    <div class="mb-4">
+                        <h2 class="fw-bold text-white mb-2">Mobile Development</h2>
+                        <div class="small fw-semibold mb-3" style="color: #c084fc;">React Native • Expo Go • TypeScript • State • API Client • Build APK</div>
+                        <p class="text-light-50 fs-6 lh-base">
+                            Bangun aplikasi mobile native modern yang responsif dan interaktif. Pelajari styling dengan StyleSheet, state management dengan React Hooks, integrasi Expo Go di smartphone fisik, konsumsi REST API Laravel, hingga proses export/build file APK Android menggunakan EAS Build.
+                        </p>
+                    </div>
+
+                    <!-- Highlight Features -->
+                    <div class="p-3 rounded-4 mb-4" style="background: rgba(15, 23, 42, 0.7); border: 1px solid #334155;">
+                        <div class="small fw-bold mb-2" style="color: #c084fc;"><i class="bi bi-check2-circle me-1"></i>Topik Kunci:</div>
+                        <div class="d-flex flex-wrap gap-2">
+                            <span class="week-pill">Minggu 1: Setup Expo & TypeScript</span>
+                            <span class="week-pill">Minggu 2: UI, State & Interaction</span>
+                            <span class="week-pill">Minggu 3: Navigation Expo Router</span>
+                            <span class="week-pill">Minggu 5: CRUD & Local Storage</span>
+                            <span class="week-pill">Minggu 6: Consume Laravel REST API</span>
+                            <span class="week-pill">Minggu 10: Finalisasi & Build APK</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-auto pt-3">
+                        <a href="mobile/index.html" class="btn w-100 py-3 rounded-3 fw-bold text-white d-flex align-items-center justify-content-center shadow-sm" style="background: linear-gradient(135deg, #7c3aed, #6366f1);">
+                            <span>Buka Silabus Mobile Development</span>
+                            <i class="bi bi-arrow-right-circle-fill ms-2 fs-5"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Tabel Perbandingan Roadmap 10 Minggu -->
+        <div class="mt-5 pt-4" id="roadmap-table">
+            <div class="card bg-dark-lighter border-secondary rounded-4 shadow-lg overflow-hidden">
+                <div class="card-header bg-dark border-secondary p-4 d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <div>
+                        <h4 class="fw-bold text-white mb-1"><i class="bi bi-map me-2 text-primary"></i>Ringkasan Roadmap 10 Minggu (Web vs Mobile)</h4>
+                        <p class="text-secondary small mb-0">Disusun berdampingan agar mahasiswa dapat melihat integrasi antara Backend Web dan Frontend Mobile.</p>
+                    </div>
+                    <span class="badge bg-primary px-3 py-2 rounded-pill">10 Minggu Terintegrasi</span>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover mb-0 align-middle">
+                        <thead>
+                            <tr class="border-secondary text-secondary small text-uppercase">
+                                <th style="width: 10%;" class="ps-4">Minggu</th>
+                                <th style="width: 45%;">🌐 Web Development Track</th>
+                                <th style="width: 45%;">📱 Mobile Development Track</th>
+                            </tr>
+                        </thead>
+                        <tbody class="border-secondary">
+                            <tr>
+                                <td class="ps-4 fw-bold text-info">1</td>
+                                <td>
+                                    <strong class="text-white">Recap Setup & Dasar PHP</strong><br>
+                                    <span class="small text-light-50">Review setup Laragon, sintaks PHP, variabel, array, function, perulangan.</span>
+                                </td>
+                                <td>
+                                    <strong class="text-white">Setup React Native, Expo & Dasar TypeScript</strong><br>
+                                    <span class="small text-light-50">Install Node.js & Expo, struktur project, TypeScript, komponen pertama.</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="ps-4 fw-bold text-info">2</td>
+                                <td>
+                                    <strong class="text-white">Logic, Form Handling & Database</strong><br>
+                                    <span class="small text-light-50">Form HTML, $_POST, if/else, validasi, koneksi PHP-MySQL, CRUD awal.</span>
+                                </td>
+                                <td>
+                                    <strong class="text-white">UI, Component, State & Interaction</strong><br>
+                                    <span class="small text-light-50">Komponen interaktif, styling StyleSheet, props, useState, event handling.</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="ps-4 fw-bold text-info">3</td>
+                                <td>
+                                    <strong class="text-white">CRUD PHP</strong><br>
+                                    <span class="small text-light-50">Create, Read, Update, Delete PHP + MySQL, pemisahan proses & data.</span>
+                                </td>
+                                <td>
+                                    <strong class="text-white">Navigation & Multi Page</strong><br>
+                                    <span class="small text-light-50">Expo Router, file-based routing, Link, parameter passing, alur list detail.</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="ps-4 fw-bold text-info">4</td>
+                                <td>
+                                    <strong class="text-white">OOP & MVC Dasar</strong><br>
+                                    <span class="small text-light-50">Class, object, method, konsep MVC, pemisahan logic, struktur aplikasi.</span>
+                                </td>
+                                <td>
+                                    <strong class="text-white">Component & Struktur Code</strong><br>
+                                    <span class="small text-light-50">Reusable component, custom component, modular folder, separation of concern.</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="ps-4 fw-bold text-info">5</td>
+                                <td>
+                                    <strong class="text-white">Pengenalan Laravel</strong><br>
+                                    <span class="small text-light-50">Struktur Laravel, routing, controller, view, migration, model.</span>
+                                </td>
+                                <td>
+                                    <strong class="text-white">CRUD Lokal & Local Storage</strong><br>
+                                    <span class="small text-light-50">Array/object, state management, AsyncStorage, persistence data di device.</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="ps-4 fw-bold text-info">6</td>
+                                <td>
+                                    <strong class="text-white">Laravel CRUD & Eloquent</strong><br>
+                                    <span class="small text-light-50">Migration, model, controller, Eloquent ORM, form dan CRUD.</span>
+                                </td>
+                                <td>
+                                    <strong class="text-white">HTTP & Consume REST API</strong><br>
+                                    <span class="small text-light-50">Konsep HTTP, fetch, async/await, service ambil data dari REST API Laravel.</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="ps-4 fw-bold text-info">7</td>
+                                <td>
+                                    <strong class="text-white">REST API Laravel</strong><br>
+                                    <span class="small text-light-50">Endpoint API, HTTP method, response JSON, GET, POST, PUT, DELETE.</span>
+                                </td>
+                                <td>
+                                    <strong class="text-white">CRUD melalui REST API</strong><br>
+                                    <span class="small text-light-50">POST, PUT, DELETE, request body, handling response, integrasi endpoint Laravel.</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="ps-4 fw-bold text-info">8</td>
+                                <td>
+                                    <strong class="text-white">Relasi, Validasi & API Testing</strong><br>
+                                    <span class="small text-light-50">Relasi one-to-many, validation, status code, error response, Postman.</span>
+                                </td>
+                                <td>
+                                    <strong class="text-white">Relasi Data & API Integration</strong><br>
+                                    <span class="small text-light-50">Tampilkan data relasi API, nested JSON, multiple endpoint handling.</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="ps-4 fw-bold text-info">9</td>
+                                <td>
+                                    <strong class="text-white">Fitur Lanjutan & Penyempurnaan API</strong><br>
+                                    <span class="small text-light-50">Search, filter, pagination, response API siap dikonsumsi Mobile.</span>
+                                </td>
+                                <td>
+                                    <strong class="text-white">Search, Filter & UI/UX Feedback</strong><br>
+                                    <span class="small text-light-50">Pencarian, filter data, loading indicator, Alert, Toast, error handling.</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="ps-4 fw-bold text-info">10</td>
+                                <td>
+                                    <strong class="text-white">Final Project Web</strong><br>
+                                    <span class="small text-light-50">Aplikasi Laravel lengkap + REST API backend siap demo.</span>
+                                </td>
+                                <td>
+                                    <strong class="text-white">Finalisasi & Build APK</strong><br>
+                                    <span class="small text-light-50">Testing, integrasi final Laravel API, konfigurasi EAS Build, generate APK.</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </main>
 
     <footer class="text-center py-4 text-light-50 border-top border-secondary mt-5">
-        <p class="mb-0">© 2026 BPROTIC - Divisi Web Development</p>
-    </footer>  
+        <p class="mb-0">© 2026 BPROTIC - Badan Pengembangan Riset & Organisasi Teknologi Informasi Komputer</p>
+    </footer>
 
-    <!-- Scripts -->
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/php.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
-    <!-- Data & Engine -->
-    <script src="assets/js/data.js"></script>
-    <script src="assets/js/core.js"></script>
 </body>
 </html>
