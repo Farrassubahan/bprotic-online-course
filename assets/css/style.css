@@ -95,6 +95,25 @@ body::after {
     100% { transform: translate(-40px, 70px) scale(0.9); }
 }
 
+/* Background Particle Dots Canvas (Antigravity Mesh) */
+#bg-particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.85;
+    transition: opacity 0.5s ease;
+}
+
+/* Stacking context: Memastikan konten berada di atas canvas namun latar tetap transparan */
+nav, main, footer, .container, .portal-hero, .portal-card, .content-wrapper, .syllabus-container {
+    position: relative;
+    z-index: 1;
+}
+
 .text-light-50 { 
     color: var(--text-muted) !important; 
 }

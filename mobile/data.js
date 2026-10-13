@@ -1721,7 +1721,480 @@ ionic serve</code></pre>
                     </section>
                 `
             },
-            "2": { title: "UI, Data Binding & Interaction", subtitle: "Komponen UI Ionic, data binding, interpolasi data, dan event handling." },
+            "2": {
+                title: "UI, Data Binding & Interaction",
+                subtitle: "Komponen UI Ionic, data binding dua arah, interpolasi data, event handling onIonInput & onClick.",
+                content: `
+                    <!-- Pengantar Materi -->
+                    <section class="mb-5">
+                        <div class="card bg-dark-lighter border-info shadow-sm">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <i class="bi bi-info-circle-fill fs-2 text-info me-3"></i>
+                                    <h4 class="fw-bold mb-0 text-white">Apa yang Dipelajari di Pertemuan 2 Ionic?</h4>
+                                </div>
+                                <p class="text-light-50 fs-5 mb-3">
+                                    Di pertemuan kedua ini, kita akan mengubah tampilan statis menjadi <strong>aplikasi mobile yang interaktif dan dinamis</strong> menggunakan ekosistem <strong>Ionic React</strong>. Kita akan mempelajari bagaimana komponen bawaan Ionic beradaptasi secara native, cara menangkap ketikan pengguna melalui <em>Data Binding</em>, menampilkan data dinamis (<em>Interpolasi</em>), dan merespon sentuhan tombol.
+                                </p>
+                                <div class="row g-3 mt-1">
+                                    <div class="col-md-4">
+                                        <div class="p-3 bg-dark rounded border border-secondary h-100">
+                                            <h6 class="text-info fw-bold"><i class="bi bi-columns-gap me-2"></i>Komponen UI Bawaan</h6>
+                                            <p class="small text-light-50 mb-0">Ionic menyediakan <code>IonCard</code>, <code>IonInput</code>, <code>IonItem</code>, dan <code>IonButton</code> yang otomatis beradaptasi dengan gaya iOS (Cupertino) dan Android (Material Design).</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="p-3 bg-dark rounded border border-secondary h-100">
+                                            <h6 class="text-primary fw-bold"><i class="bi bi-arrow-repeat me-2"></i>Data Binding & Interpolasi</h6>
+                                            <p class="small text-light-50 mb-0">Menghubungkan input teks dengan memori state React (<code>useState</code>) dan menampilkan nilai variabel ke layar HP secara real-time menggunakan kurung kurawal <code>{nilai}</code>.</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="p-3 bg-dark rounded border border-secondary h-100">
+                                            <h6 class="text-success fw-bold"><i class="bi bi-hand-index-thumb me-2"></i>Event Handling & Action</h6>
+                                            <p class="small text-light-50 mb-0">Menggunakan event khusus Ionic seperti <code>onIonInput</code> untuk membaca ketikan formulir dan <code>onClick</code> pada tombol untuk memicu fungsi logika.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- PENTING: Rekomendasi Struktur File Maintainable Modul 2 Ionic -->
+                    <section class="mb-5 pb-4 border-bottom border-secondary">
+                        <div class="card border-info bg-dark-lighter shadow-sm">
+                            <div class="card-body p-4">
+                                <h5 class="fw-bold text-info mb-3"><i class="bi bi-diagram-3-fill me-2"></i>Struktur File Maintainable Modul 2:</h5>
+                                <p class="text-light-50 fs-6 mb-3">
+                                    Agar kode tidak menumpuk dalam ratusan baris di <code>Home.tsx</code>, kita membagi kode project menjadi folder modular yang rapi:
+                                </p>
+                                <ul class="text-light-50 lh-lg fs-6 mb-0">
+                                    <li><code>📁 src/types/student.types.ts</code> : Menampung interface model data <code>StudentItem</code>.</li>
+                                    <li><code>📁 src/components/StudentCard.tsx</code> : Komponen kartu peserta (reusable UI) dengan badge dan tombol hapus.</li>
+                                    <li><code>📁 src/pages/Home.tsx</code> : Halaman utama yang mengelola form input Ionic, state data, dan daftar peserta kursus.</li>
+                                    <li><code>📁 src/App.tsx</code> : Root entry point Ionic setup yang membungkus komponen dalam <code>IonApp</code>.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Tahap 1: Konsep UI Component & Data Binding di Ionic -->
+                    <section class="mb-5 pb-4 border-bottom border-secondary">
+                        <div class="d-flex align-items-center mb-3">
+                            <span class="badge bg-primary fs-6 me-3">Tahap 1</span>
+                            <h2 class="fw-bold mb-0 text-primary">Konsep Data Binding & Event Handling di Ionic</h2>
+                        </div>
+                        <p class="text-light-50 fs-5">Di Ionic React, form input biasanya dibungkus di dalam <code>IonItem</code> agar memiliki garis pembatas dan padding standar aplikasi mobile native.</p>
+                        
+                        <div class="card bg-dark-lighter border-secondary mb-4 shadow-sm">
+                            <div class="card-body p-4">
+                                <h5 class="fw-bold text-info"><i class="bi bi-lightbulb me-2"></i>Mekanisme Two-Way Binding di Ionic React:</h5>
+                                <p class="text-light-50 mb-3"><code>&lt;IonInput value={nama} onIonInput={(e) =&gt; setNama(e.detail.value!)} /&gt;</code></p>
+                                <ul class="text-light-50 lh-lg mb-0 fs-6">
+                                    <li><code>value={nama}</code>: Menampilkan isi state ke dalam kotak input.</li>
+                                    <li><code>onIonInput</code>: Event khusus Ionic yang terpanggil setiap kali pengguna mengetik huruf di keyboard HP. Nilai teks diambil dari <code>e.detail.value!</code>.</li>
+                                    <li><code>onClick</code> pada <code>&lt;IonButton&gt;</code>: Memicu fungsi JavaScript untuk menambahkan data ke array state.</li>
+                                    <li><strong>Interpolasi Data</strong>: Menampilkan data ke dalam JSX menggunakan ekspresi <code>{item.nama}</code> dan perulangan array <code>data.map((item) =&gt; ...)</code>.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Tahap 2: Implementasi File per File -->
+                    <section class="mb-5 pb-4 border-bottom border-secondary">
+                        <div class="d-flex align-items-center mb-3">
+                            <span class="badge bg-primary fs-6 me-3">Tahap 2</span>
+                            <h2 class="fw-bold mb-0 text-primary">Hands-on: Form Input & Daftar Peserta Kursus Interaktif</h2>
+                        </div>
+                        <p class="text-light-50 fs-5 mb-4">Mari kita buat dan lengkapi 4 file berikut di dalam folder project Ionic kamu (<code>bprotic-ionic/</code>):</p>
+
+                        <!-- File 1: types -->
+                        <div class="mb-4">
+                            <div class="d-flex align-items-center justify-content-between bg-dark p-3 rounded-top border border-secondary border-bottom-0">
+                                <div>
+                                    <span class="badge bg-info text-dark me-2">File 1</span>
+                                    <strong class="text-white"><i class="bi bi-file-earmark-code me-1 text-info"></i>src/types/student.types.ts</strong>
+                                </div>
+                                <span class="small text-secondary">Definisi Interface Data</span>
+                            </div>
+                            <div class="p-4 bg-dark-lighter border border-secondary rounded-bottom">
+                                <p class="text-light-50 small mb-2"><i class="bi bi-folder-plus me-1 text-warning"></i>Buat folder <code>src/types/</code> lalu buat file <code>student.types.ts</code>:</p>
+                                <pre><code class="language-typescript">// src/types/student.types.ts
+
+export interface StudentItem {
+    id: string;
+    nama: string;
+    kelas: string;
+    status: "Aktif" | "Cuti";
+}</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- File 2: components/StudentCard -->
+                        <div class="mb-4">
+                            <div class="d-flex align-items-center justify-content-between bg-dark p-3 rounded-top border border-secondary border-bottom-0">
+                                <div>
+                                    <span class="badge bg-primary me-2">File 2</span>
+                                    <strong class="text-white"><i class="bi bi-file-earmark-code me-1 text-info"></i>src/components/StudentCard.tsx</strong>
+                                </div>
+                                <span class="small text-secondary">Komponen Kartu Reusable</span>
+                            </div>
+                            <div class="p-4 bg-dark-lighter border border-secondary rounded-bottom">
+                                <p class="text-light-50 small mb-2"><i class="bi bi-folder-plus me-1 text-warning"></i>Buat folder <code>src/components/</code> lalu buat file <code>StudentCard.tsx</code>:</p>
+                                <pre><code class="language-tsx">// src/components/StudentCard.tsx
+import React from 'react';
+import { 
+    IonCard, 
+    IonCardHeader, 
+    IonCardSubtitle, 
+    IonCardTitle, 
+    IonCardContent, 
+    IonBadge, 
+    IonButton, 
+    IonIcon 
+} from '@ionic/react';
+import { trashOutline, personCircleOutline } from 'ionicons/icons';
+import { StudentItem } from '../types/student.types';
+
+interface StudentCardProps {
+    student: StudentItem;
+    onDelete: (id: string) =&gt; void;
+}
+
+export const StudentCard: React.FC&lt;StudentCardProps&gt; = ({ student, onDelete }) =&gt; {
+    return (
+        &lt;IonCard className="ion-margin-bottom" style={{ borderRadius: '14px', border: '1px solid #334155' }}&gt;
+            &lt;IonCardHeader className="ion-padding-bottom"&gt;
+                &lt;div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}&gt;
+                    &lt;div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}&gt;
+                        &lt;IonIcon icon={personCircleOutline} style={{ fontSize: '24px', color: '#38bdf8' }} /&gt;
+                        &lt;IonCardTitle style={{ fontSize: '18px', fontWeight: 'bold' }}&gt;
+                            {student.nama}
+                        &lt;/IonCardTitle&gt;
+                    &lt;/div&gt;
+                    &lt;IonBadge color={student.status === 'Aktif' ? 'success' : 'warning'}&gt;
+                        {student.status}
+                    &lt;/IonBadge&gt;
+                &lt;/div&gt;
+                &lt;IonCardSubtitle style={{ marginTop: '4px', color: '#94a3b8' }}&gt;
+                    Kelas: {student.kelas}
+                &lt;/IonCardSubtitle&gt;
+            &lt;/IonCardHeader&gt;
+
+            &lt;IonCardContent style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}&gt;
+                &lt;span style={{ fontSize: '12px', color: '#64748b' }}&gt;ID: {student.id}&lt;/span&gt;
+                &lt;IonButton 
+                    fill="clear" 
+                    color="danger" 
+                    size="small" 
+                    onClick={() =&gt; onDelete(student.id)}
+                &gt;
+                    &lt;IonIcon slot="icon-only" icon={trashOutline} /&gt;
+                &lt;/IonButton&gt;
+            &lt;/IonCardContent&gt;
+        &lt;/IonCard&gt;
+    );
+};</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- File 3: pages/Home.tsx -->
+                        <div class="mb-4">
+                            <div class="d-flex align-items-center justify-content-between bg-dark p-3 rounded-top border border-secondary border-bottom-0">
+                                <div>
+                                    <span class="badge bg-success me-2">File 3</span>
+                                    <strong class="text-white"><i class="bi bi-file-earmark-code me-1 text-info"></i>src/pages/Home.tsx</strong>
+                                </div>
+                                <span class="small text-secondary">Halaman Interaktif & Form</span>
+                            </div>
+                            <div class="p-4 bg-dark-lighter border border-secondary rounded-bottom">
+                                <p class="text-light-50 small mb-2"><i class="bi bi-file-earmark-text me-1 text-warning"></i>Buka file <code>src/pages/Home.tsx</code> dan ganti isinya dengan kode berikut:</p>
+                                <pre><code class="language-tsx">// src/pages/Home.tsx
+import React, { useState } from 'react';
+import {
+    IonPage,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    IonItem,
+    IonLabel,
+    IonInput,
+    IonButton,
+    IonIcon,
+    IonCard,
+    IonCardContent,
+    IonList,
+    IonToast
+} from '@ionic/react';
+import { personAddOutline } from 'ionicons/icons';
+import { StudentItem } from '../types/student.types';
+import { StudentCard } from '../components/StudentCard';
+
+const Home: React.FC = () =&gt; {
+    // 1. State data peserta (array)
+    const [students, setStudents] = useState&lt;StudentItem[]&gt;([
+        { id: '1', nama: 'Farras Subahan', kelas: 'Mobile Dev Expo', status: 'Aktif' },
+        { id: '2', nama: 'Budi Santoso', kelas: 'Web Dev Laravel', status: 'Aktif' }
+    ]);
+
+    // 2. State untuk form input (Two-Way Binding)
+    const [namaInput, setNamaInput] = useState&lt;string&gt;('');
+    const [kelasInput, setKelasInput] = useState&lt;string&gt;('');
+
+    // 3. State notifikasi Toast
+    const [showToast, setShowToast] = useState&lt;boolean&gt;(false);
+    const [toastMessage, setToastMessage] = useState&lt;string&gt;('');
+
+    // 4. Handler tombol Tambah Peserta
+    const handleAddStudent = () =&gt; {
+        if (!namaInput.trim() || !kelasInput.trim()) {
+            setToastMessage('Harap lengkapi nama dan kelas!');
+            setShowToast(true);
+            return;
+        }
+
+        const newStudent: StudentItem = {
+            id: Date.now().toString(),
+            nama: namaInput.trim(),
+            kelas: kelasInput.trim(),
+            status: 'Aktif'
+        };
+
+        setStudents([newStudent, ...students]);
+        setNamaInput('');
+        setKelasInput('');
+        setToastMessage('Berhasil menambahkan peserta baru!');
+        setShowToast(true);
+    };
+
+    // 5. Handler tombol Hapus
+    const handleDeleteStudent = (id: string) =&gt; {
+        setStudents(students.filter(student =&gt; student.id !== id));
+        setToastMessage('Peserta berhasil dihapus.');
+        setShowToast(true);
+    };
+
+    return (
+        &lt;IonPage&gt;
+            &lt;IonHeader&gt;
+                &lt;IonToolbar color="primary"&gt;
+                    &lt;IonTitle&gt;BPROTIC Kursus Mobile&lt;/IonTitle&gt;
+                &lt;/IonToolbar&gt;
+            &lt;/IonHeader&gt;
+
+            &lt;IonContent fullscreen className="ion-padding"&gt;
+                {/* Form Input Card */}
+                &lt;IonCard style={{ borderRadius: '16px', margin: '0 0 20px 0' }}&gt;
+                    &lt;IonCardContent&gt;
+                        &lt;h4 style={{ fontWeight: 'bold', marginBottom: '16px', color: '#38bdf8' }}&gt;
+                            &lt;IonIcon icon={personAddOutline} style={{ marginRight: '8px' }} /&gt;
+                            Tambah Peserta Baru
+                        &lt;/h4&gt;
+
+                        &lt;IonItem lines="full" style={{ marginBottom: '12px' }}&gt;
+                            &lt;IonLabel position="stacked"&gt;Nama Lengkap&lt;/IonLabel&gt;
+                            &lt;IonInput 
+                                placeholder="Contoh: Siti Rahma" 
+                                value={namaInput}
+                                onIonInput={(e) =&gt; setNamaInput(e.detail.value || '')}
+                                clearInput
+                            /&gt;
+                        &lt;/IonItem&gt;
+
+                        &lt;IonItem lines="full" style={{ marginBottom: '16px' }}&gt;
+                            &lt;IonLabel position="stacked"&gt;Pilihan Kelas&lt;/IonLabel&gt;
+                            &lt;IonInput 
+                                placeholder="Contoh: Mobile Development (Ionic)" 
+                                value={kelasInput}
+                                onIonInput={(e) =&gt; setKelasInput(e.detail.value || '')}
+                                clearInput
+                            /&gt;
+                        &lt;/IonItem&gt;
+
+                        &lt;IonButton 
+                            expand="block" 
+                            color="primary" 
+                            onClick={handleAddStudent}
+                            style={{ fontWeight: 'bold' }}
+                        &gt;
+                            Simpan Peserta
+                        &lt;/IonButton&gt;
+                    &lt;/IonCardContent&gt;
+                &lt;/IonCard&gt;
+
+                {/* Ringkasan & Total */}
+                &lt;div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}&gt;
+                    &lt;h5 style={{ fontWeight: 'bold', margin: 0 }}&gt;Daftar Peserta Terdaftar&lt;/h5&gt;
+                    &lt;span style={{ fontSize: '14px', color: '#94a3b8' }}&gt;
+                        Total: &lt;strong style={{ color: '#38bdf8' }}&gt;{students.length}&lt;/strong&gt; Orang
+                    &lt;/span&gt;
+                &lt;/div&gt;
+
+                {/* List Peserta Dinamis */}
+                &lt;IonList lines="none"&gt;
+                    {students.map((student) =&gt; (
+                        &lt;StudentCard 
+                            key={student.id} 
+                            student={student} 
+                            onDelete={handleDeleteStudent} 
+                        /&gt;
+                    ))}
+                &lt;/IonList&gt;
+
+                {/* Feedback Toast Notification */}
+                &lt;IonToast
+                    isOpen={showToast}
+                    onDidDismiss={() =&gt; setShowToast(false)}
+                    message={toastMessage}
+                    duration={1800}
+                    position="bottom"
+                /&gt;
+            &lt;/IonContent&gt;
+        &lt;/IonPage&gt;
+    );
+};
+
+export default Home;</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- File 4: App.tsx -->
+                        <div class="mb-4">
+                            <div class="d-flex align-items-center justify-content-between bg-dark p-3 rounded-top border border-secondary border-bottom-0">
+                                <div>
+                                    <span class="badge bg-secondary me-2">File 4</span>
+                                    <strong class="text-white"><i class="bi bi-file-earmark-code me-1 text-info"></i>src/App.tsx</strong>
+                                </div>
+                                <span class="small text-secondary">Root Setup & Themes</span>
+                            </div>
+                            <div class="p-4 bg-dark-lighter border border-secondary rounded-bottom">
+                                <p class="text-light-50 small mb-2"><i class="bi bi-file-earmark-text me-1 text-warning"></i>Pastikan <code>src/App.tsx</code> merender komponen <code>Home</code>:</p>
+                                <pre><code class="language-tsx">// src/App.tsx
+import React from 'react';
+import { IonApp, setupIonicReact } from '@ionic/react';
+
+/* Core CSS required for Ionic components to work properly */
+import '@ionic/react/css/core.css';
+import '@ionic/react/css/normalize.css';
+import '@ionic/react/css/structure.css';
+import '@ionic/react/css/typography.css';
+
+/* Theme variables */
+import './theme/variables.css';
+
+import Home from './pages/Home';
+
+setupIonicReact();
+
+const App: React.FC = () =&gt; (
+    &lt;IonApp&gt;
+        &lt;Home /&gt;
+    &lt;/IonApp&gt;
+);
+
+export default App;</code></pre>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Tahap 3: Simulasi Output Tampilan Mobile (Posisi di Bawah Code) -->
+                    <section class="mb-5 pb-4 border-bottom border-secondary">
+                        <div class="d-flex align-items-center mb-3">
+                            <span class="badge bg-primary fs-6 me-3">Tahap 3</span>
+                            <h2 class="fw-bold mb-0 text-primary">Simulasi Output Tampilan Mobile</h2>
+                        </div>
+                        <p class="text-light-50 fs-5 mb-4">
+                            Jalankan perintah <code>ionic serve</code> di terminal kamu. Aplikasi akan berjalan di browser dengan preview interaktif tampilan smartphone:
+                        </p>
+
+                        <div class="row justify-content-center">
+                            <div class="col-md-6 mb-4">
+                                <div class="p-3 bg-dark border border-info rounded text-center">
+                                    <h6 class="text-info fw-bold mb-3"><i class="bi bi-phone me-2"></i>Simulasi Aplikasi Ionic (Home.tsx)</h6>
+                                    <div class="phone-mockup">
+                                        <div class="phone-notch"><div class="phone-notch-camera"></div></div>
+                                        <div class="phone-screen text-start">
+                                            <!-- Ionic App Bar -->
+                                            <div class="p-2 border-bottom border-secondary mb-3 d-flex align-items-center justify-content-between" style="background: #0284c7;">
+                                                <strong class="text-white small">BPROTIC Kursus Mobile</strong>
+                                                <i class="bi bi-person-circle text-white small"></i>
+                                            </div>
+
+                                            <!-- Form Card Preview -->
+                                            <div class="p-3 rounded-3 mb-3" style="background: #1e293b; border: 1px solid #334155;">
+                                                <div class="text-info fw-bold small mb-2"><i class="bi bi-person-plus me-1"></i> Tambah Peserta Baru</div>
+                                                <div class="mb-2">
+                                                    <span class="text-secondary" style="font-size: 8px;">NAMA LENGKAP</span>
+                                                    <div class="bg-dark p-1 rounded border border-secondary text-white small" style="font-size: 10px;">Siti Rahma</div>
+                                                </div>
+                                                <div class="mb-2">
+                                                    <span class="text-secondary" style="font-size: 8px;">PILIHAN KELAS</span>
+                                                    <div class="bg-dark p-1 rounded border border-secondary text-white small" style="font-size: 10px;">Mobile Dev (Ionic)</div>
+                                                </div>
+                                                <div class="btn btn-primary btn-sm w-100 py-1" style="font-size: 10px; font-weight: bold;">Simpan Peserta</div>
+                                            </div>
+
+                                            <!-- List Header -->
+                                            <div class="d-flex justify-content-between align-items-center mb-2 px-1">
+                                                <span class="text-white fw-bold" style="font-size: 9px;">Daftar Peserta</span>
+                                                <span class="text-info" style="font-size: 8px;">Total: 2 Orang</span>
+                                            </div>
+
+                                            <!-- Item 1 -->
+                                            <div class="p-2 rounded-2 mb-2" style="background: #1e293b; border: 1px solid #38bdf8;">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <strong class="text-white small" style="font-size: 10px;">Farras Subahan</strong>
+                                                    <span class="badge bg-success text-dark" style="font-size: 7px;">Aktif</span>
+                                                </div>
+                                                <span class="text-secondary d-block" style="font-size: 8px;">Kelas: Mobile Dev Expo</span>
+                                                <div class="d-flex justify-content-between align-items-center mt-1">
+                                                    <span class="text-muted" style="font-size: 7px;">ID: 17288910</span>
+                                                    <i class="bi bi-trash text-danger" style="font-size: 9px;"></i>
+                                                </div>
+                                            </div>
+
+                                            <!-- Item 2 -->
+                                            <div class="p-2 rounded-2 mb-2" style="background: #1e293b; border: 1px solid #334155;">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <strong class="text-white small" style="font-size: 10px;">Budi Santoso</strong>
+                                                    <span class="badge bg-success text-dark" style="font-size: 7px;">Aktif</span>
+                                                </div>
+                                                <span class="text-secondary d-block" style="font-size: 8px;">Kelas: Web Dev Laravel</span>
+                                                <div class="d-flex justify-content-between align-items-center mt-1">
+                                                    <span class="text-muted" style="font-size: 7px;">ID: 17288911</span>
+                                                    <i class="bi bi-trash text-danger" style="font-size: 9px;"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Tugas Studi Kasus Modul 2 Ionic -->
+                    <section class="mt-5 pt-3">
+                        <div class="card bg-primary bg-opacity-10 border-primary border-2 shadow-lg">
+                            <div class="card-body p-5">
+                                <h3 class="fw-bold text-primary mb-4"><i class="bi bi-journal-code me-3"></i>Tugas & Studi Kasus: Modul 2 Ionic</h3>
+                                <p class="text-light-50 mb-4 fs-5">
+                                    Kembangkan aplikasi di atas menjadi <strong>Aplikasi Catatan Pengeluaran Harian Mahasiswa (Expense Tracker)</strong> dengan ketentuan:
+                                </p>
+                                <div class="p-4 bg-dark-lighter rounded border border-secondary">
+                                    <ol class="text-light-50 lh-lg fs-5 mb-0">
+                                        <li class="mb-3">Buat tipe data <code>ExpenseItem</code> di <code>src/types/expense.types.ts</code> (id, judul, nominal, kategori).</li>
+                                        <li class="mb-3">Buat input form menggunakan <code>IonInput</code> untuk Judul dan Nominal, serta <code>IonSelect</code> untuk memilih Kategori (Makanan, Transportasi, Kuliah).</li>
+                                        <li class="mb-3">Tampilkan total akumulasi pengeluaran di bagian atas layar secara otomatis menggunakan kalkulasi <code>reduce()</code>.</li>
+                                        <li class="mb-3">Tambahkan fitur tombol hapus pengeluaran dengan konfirmasi atau notifikasi <code>IonToast</code>.</li>
+                                        <li>Jalankan di browser menggunakan <code>ionic serve</code> dan demonstrasikan interaktivitasnya!</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                `
+            },
             "3": {
                 title: "Navigation & Multi Page (Ionic React Navigation)",
                 subtitle: "IonReactRouter, IonRouterOutlet, dynamic route /detail/:id, useParams, IonBackButton, dan alur list-detail.",
