@@ -46,7 +46,22 @@
             font-weight: 600;
             box-shadow: 0 2px 8px rgba(124, 58, 237, 0.4);
         }
+        [data-theme="light"] .nav-framework-btn {
+            background: #e2e8f0;
+            color: #475569;
+            border-color: #cbd5e1;
+        }
+        [data-theme="light"] .nav-framework-btn:hover {
+            color: #1e293b;
+            border-color: #7c3aed;
+        }
+        [data-theme="light"] .nav-framework-btn.active {
+            background: linear-gradient(135deg, #7c3aed, #6366f1);
+            color: #ffffff;
+        }
     </style>
+    <!-- Theme & Animation Script -->
+    <script src="../assets/js/theme-animation.js"></script>
 </head>
 <body>
 
@@ -79,9 +94,9 @@
                         </a>
                     </div>
                     
-                    <!-- Dropdown Pertemuan -->
-                    <div class="ms-lg-2">
-                        <select id="weekSelector" class="form-select form-select-sm bg-dark text-light border-secondary shadow-sm" style="min-width: 260px;">
+                    <!-- Dropdown Pertemuan & Theme Toggle -->
+                    <div class="d-flex align-items-center gap-2 ms-lg-2">
+                        <select id="weekSelector" class="form-select form-select-sm bg-dark text-light border-secondary shadow-sm" style="min-width: 250px;">
                             <option value="1" selected>Pertemuan 1: Setup & Dasar TypeScript</option>
                             <option value="2">Pertemuan 2: UI, State & Interaction</option>
                             <option value="3">Pertemuan 3: Navigation & Multi Page</option>
@@ -93,6 +108,9 @@
                             <option value="9">Pertemuan 9: Search, Filter & Feedback</option>
                             <option value="10">Pertemuan 10: Finalisasi & Build APK</option>
                         </select>
+                        <button class="btn btn-theme-toggle rounded-circle flex-shrink-0" title="Ubah Mode Gelap / Terang" aria-label="Toggle theme">
+                            <i class="bi bi-moon-stars-fill theme-icon"></i>
+                        </button>
                     </div>
                 </div>
             </div>

@@ -972,7 +972,673 @@ const styles = StyleSheet.create({
                     </section>
                 `
             },
-            "3": { title: "Navigation & Multi Page (Expo Router)", subtitle: "Expo Router, file-based routing, Link, dynamic route, dan alur list-detail." },
+            "3": {
+                title: "Navigation & Multi Page (Expo Router)",
+                subtitle: "Expo Router, file-based routing, Stack layout, Link, router.push, dynamic route [id], passing parameter, dan alur list-detail.",
+                content: `
+                    <!-- Pengantar Materi -->
+                    <section class="mb-5">
+                        <div class="card bg-dark-lighter border-info shadow-sm">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <i class="bi bi-signpost-split-fill fs-2 text-info me-3"></i>
+                                    <h4 class="fw-bold mb-0 text-white">Apa yang Dipelajari di Pertemuan 3 Mobile?</h4>
+                                </div>
+                                <p class="text-light-50 fs-5 mb-3">
+                                    Aplikasi mobile di dunia nyata tidak pernah hanya memiliki satu layar. Di pertemuan ini, kita akan mempelajari konsep <strong>Navigasi & Multi-Page</strong> menggunakan standar resmi industri terbaru: <strong>Expo Router</strong>.
+                                </p>
+                                <div class="row g-3 mt-1">
+                                    <div class="col-md-4">
+                                        <div class="p-3 bg-dark rounded border border-secondary h-100">
+                                            <h6 class="text-info fw-bold"><i class="bi bi-folder2-open me-2"></i>File-Based Routing</h6>
+                                            <p class="small text-light-50 mb-0">Mirip seperti web, nama file dan folder di dalam direktori <code>app/</code> otomatis menjadi URL rute halaman. Tanpa konfigurasi routing rumit!</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="p-3 bg-dark rounded border border-secondary h-100">
+                                            <h6 class="text-primary fw-bold"><i class="bi bi-arrow-left-right me-2"></i>Passing Parameter</h6>
+                                            <p class="small text-light-50 mb-0">Mengirim data ID dari halaman List ke halaman Detail menggunakan Dynamic Route <code>[id].tsx</code> dan React Hook <code>useLocalSearchParams()</code>.</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="p-3 bg-dark rounded border border-secondary h-100">
+                                            <h6 class="text-success fw-bold"><i class="bi bi-layers me-2"></i>Native Stack Header</h6>
+                                            <p class="small text-light-50 mb-0">Otomatis mendapatkan animasi transisi layar halus khas iOS/Android lengkap dengan tombol kembali (Back Button) bawaan sistem operasi.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- PENTING: Lokasi Project & Struktur Expo Router -->
+                    <section class="mb-5 pb-4 border-bottom border-secondary">
+                        <div class="d-flex align-items-center mb-3">
+                            <span class="badge bg-primary fs-6 me-3">Tahap 1</span>
+                            <h2 class="fw-bold mb-0 text-primary">Struktur Folder Maintainable (Expo Router)</h2>
+                        </div>
+                        <p class="text-light-50 fs-5 mb-4">
+                            Simpan project di folder kerja kamu (misal <code>D:\\Projects\\bprotic-mobile\\</code> atau <code>C:\\Projects\\bprotic-mobile\\</code>). <br>
+                            Susun struktur file berbasis clean architecture berikut di VS Code:
+                        </p>
+
+                        <div class="card bg-dark-lighter border-secondary mb-4 shadow-sm">
+                            <div class="card-body p-4">
+                                <h6 class="text-info fw-bold mb-3"><i class="bi bi-folder-symlink me-2"></i>Pohon Struktur File:</h6>
+                                <pre><code class="language-bash">bprotic-mobile/
+├── app/                        # [ROUTER] Seluruh rute layar didaftarkan di sini
+│   ├── _layout.tsx             # [LAYOUT] Stack Navigator utama & konfigurasi header dark theme
+│   ├── index.tsx               # [HALAMAN 1] Layar Utama: Katalog Daftar Kursus (List Screen)
+│   └── detail/
+│       └── [id].tsx            # [HALAMAN 2] Layar Detail Dinamis: Menangkap parameter id
+├── src/
+│   ├── types/
+│   │   └── course.types.ts     # [TYPES] Interface TypeScript model data Course
+│   └── data/
+│       └── courses.data.ts     # [DATA] Array data mock daftar kursus BPROTIC
+├── app.json
+└── package.json</code></pre>
+
+                                <div class="p-3 bg-dark rounded border border-info mt-3">
+                                    <h6 class="text-info fw-bold mb-2"><i class="bi bi-lightbulb-fill me-2"></i>Aturan Penting Expo Router:</h6>
+                                    <ul class="text-light-50 small mb-0 lh-lg">
+                                        <li>File <code>app/index.tsx</code> otomatis menjadi halaman pertama yang terbuka saat aplikasi dibuka (rute <code>/</code>).</li>
+                                        <li>File dengan kurung siku seperti <code>app/detail/[id].tsx</code> adalah <strong>Dynamic Route</strong>. Rute ini bisa menangani <code>/detail/1</code>, <code>/detail/2</code>, dst.</li>
+                                        <li>File <code>app/_layout.tsx</code> bertindak sebagai pembungkus (wrapper) semua layar dengan Stack Animation native.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Tahap 2: Implementasi File per File -->
+                    <section class="mb-5 pb-4 border-bottom border-secondary">
+                        <div class="d-flex align-items-center mb-3">
+                            <span class="badge bg-primary fs-6 me-3">Tahap 2</span>
+                            <h2 class="fw-bold mb-0 text-primary">Implementasi Kode Lengkap per File</h2>
+                        </div>
+                        <p class="text-light-50 fs-5 mb-4">Mari kita buat 5 file berikut satu per satu di VS Code:</p>
+
+                        <!-- File 1: src/types/course.types.ts -->
+                        <div class="mb-4">
+                            <div class="d-flex align-items-center justify-content-between bg-dark p-3 rounded-top border border-secondary border-bottom-0">
+                                <div>
+                                    <span class="badge bg-info text-dark me-2">File 1</span>
+                                    <strong class="text-white"><i class="bi bi-file-earmark-code me-1 text-info"></i>src/types/course.types.ts</strong>
+                                </div>
+                                <span class="small text-secondary">Definisi Interface Kursus</span>
+                            </div>
+                            <div class="p-4 bg-dark-lighter border border-secondary rounded-bottom">
+                                <p class="text-light-50 small mb-2"><i class="bi bi-folder-plus me-1 text-warning"></i>Buat folder <code>src/types/</code> lalu buat file <code>course.types.ts</code>:</p>
+                                <pre><code class="language-typescript">// src/types/course.types.ts
+export interface CourseItem {
+    id: string;
+    title: string;
+    category: string;
+    level: string;
+    mentor: string;
+    description: string;
+    duration: string;
+}</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- File 2: src/data/courses.data.ts -->
+                        <div class="mb-4">
+                            <div class="d-flex align-items-center justify-content-between bg-dark p-3 rounded-top border border-secondary border-bottom-0">
+                                <div>
+                                    <span class="badge bg-primary me-2">File 2</span>
+                                    <strong class="text-white"><i class="bi bi-file-earmark-code me-1 text-primary"></i>src/data/courses.data.ts</strong>
+                                </div>
+                                <span class="small text-secondary">Mock Data Array Kursus</span>
+                            </div>
+                            <div class="p-4 bg-dark-lighter border border-secondary rounded-bottom">
+                                <p class="text-light-50 small mb-2"><i class="bi bi-folder-plus me-1 text-warning"></i>Buat folder <code>src/data/</code> lalu buat file <code>courses.data.ts</code>:</p>
+                                <pre><code class="language-typescript">// src/data/courses.data.ts
+import { CourseItem } from '../types/course.types';
+
+export const COURSES: CourseItem[] = [
+    {
+        id: '1',
+        title: 'Backend Web Development & REST API',
+        category: 'Web Development',
+        level: 'Pemula s/d Mahir',
+        mentor: 'Ahmad Farras (Tech Lead Web)',
+        duration: '10 Pertemuan (20 Jam)',
+        description: 'Pelajari dasar PHP native, MySQL, arsitektur MVC, hingga pembuatan REST API production-ready menggunakan framework Laravel 11.'
+    },
+    {
+        id: '2',
+        title: 'React Native & Mobile App Development',
+        category: 'Mobile Track',
+        level: 'Pemula s/d Menengah',
+        mentor: 'BPROTIC Mobile Lead',
+        duration: '10 Pertemuan (20 Jam)',
+        description: 'Membangun aplikasi mobile lintas platform (Android & iOS) dengan Expo, TypeScript, State Management, dan integrasi API Laravel.'
+    },
+    {
+        id: '3',
+        title: 'UI/UX Design for Mobile Apps',
+        category: 'Design Track',
+        level: 'Semua Tingkat',
+        mentor: 'Creative Lead BPROTIC',
+        duration: '6 Pertemuan (12 Jam)',
+        description: 'Pahami prinsip User Experience, Wireframing, Desain UI modern dengan Figma, dan implementasi Design System ke kode mobile.'
+    }
+];</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- File 3: app/_layout.tsx -->
+                        <div class="mb-4">
+                            <div class="d-flex align-items-center justify-content-between bg-dark p-3 rounded-top border border-secondary border-bottom-0">
+                                <div>
+                                    <span class="badge bg-warning text-dark me-2">File 3</span>
+                                    <strong class="text-white"><i class="bi bi-filetype-tsx me-1 text-warning"></i>app/_layout.tsx</strong>
+                                </div>
+                                <span class="small text-secondary">Root Stack Layout & Navigation Theme</span>
+                            </div>
+                            <div class="p-4 bg-dark-lighter border border-secondary rounded-bottom">
+                                <p class="text-light-50 small mb-2"><i class="bi bi-file-earmark me-1 text-info"></i>Buka atau buat file <code>app/_layout.tsx</code> untuk mengatur tema header navigasi:</p>
+                                <pre><code class="language-typescript">// app/_layout.tsx
+import { Stack } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
+
+export default function RootLayout() {
+    return (
+        &lt;&gt;
+            &lt;StatusBar style="light" /&gt;
+            &lt;Stack
+                screenOptions={{
+                    headerStyle: {
+                        backgroundColor: '#0f172a',
+                    },
+                    headerTintColor: '#38bdf8',
+                    headerTitleStyle: {
+                        fontWeight: 'bold',
+                        color: '#f8fafc',
+                    },
+                    contentStyle: {
+                        backgroundColor: '#0f172a',
+                    },
+                }}
+            &gt;
+                {/* Halaman List Kursus */}
+                &lt;Stack.Screen
+                    name="index"
+                    options={{
+                        title: 'Katalog Kursus BPROTIC',
+                    }}
+                /&gt;
+                {/* Halaman Detail Dinamis */}
+                &lt;Stack.Screen
+                    name="detail/[id]"
+                    options={{
+                        title: 'Rincian Kursus',
+                        headerBackTitle: 'Kembali',
+                    }}
+                /&gt;
+            &lt;/Stack&gt;
+        &lt;/&gt;
+    );
+}</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- File 4: app/index.tsx -->
+                        <div class="mb-4">
+                            <div class="d-flex align-items-center justify-content-between bg-dark p-3 rounded-top border border-secondary border-bottom-0">
+                                <div>
+                                    <span class="badge bg-success me-2">File 4</span>
+                                    <strong class="text-white"><i class="bi bi-filetype-tsx me-1 text-success"></i>app/index.tsx</strong>
+                                </div>
+                                <span class="small text-secondary">Halaman List Katalog (Halaman Utama)</span>
+                            </div>
+                            <div class="p-4 bg-dark-lighter border border-secondary rounded-bottom">
+                                <p class="text-light-50 small mb-2"><i class="bi bi-file-earmark me-1 text-info"></i>Buat atau ubah file <code>app/index.tsx</code>:</p>
+                                <pre><code class="language-typescript">// app/index.tsx
+import React from 'react';
+import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
+import { router } from 'expo-router';
+import { COURSES } from '../src/data/courses.data';
+import { CourseItem } from '../src/types/course.types';
+
+export default function HomeScreen() {
+    // Fungsi berpindah halaman ke detail dengan parameter id
+    const handleOpenDetail = (item: CourseItem) => {
+        router.push('/detail/' + item.id);
+    };
+
+    return (
+        &lt;View style={styles.container}&gt;
+            &lt;View style={styles.header}&gt;
+                &lt;Text style={styles.subtitle}&gt;BPROTIC MOBILE LEARNING&lt;/Text&gt;
+                &lt;Text style={styles.title}&gt;Pilih Jalur Belajar 🚀&lt;/Text&gt;
+                &lt;Text style={styles.infoText}&gt;
+                    Klik pada kartu kursus di bawah untuk melihat rincian silabus & mentor.
+                &lt;/Text&gt;
+            &lt;/View&gt;
+
+            &lt;FlatList
+                data={COURSES}
+                keyExtractor={(item) => item.id}
+                contentContainerStyle={styles.listContent}
+                renderItem={({ item }) => (
+                    &lt;TouchableOpacity
+                        style={styles.card}
+                        activeOpacity={0.7}
+                        onPress={() => handleOpenDetail(item)}
+                    &gt;
+                        &lt;View style={styles.cardHeader}&gt;
+                            &lt;Text style={styles.badge}&gt;{item.category}&lt;/Text&gt;
+                            &lt;Text style={styles.levelText}&gt;{item.level}&lt;/Text&gt;
+                        &lt;/View&gt;
+
+                        &lt;Text style={styles.cardTitle}&gt;{item.title}&lt;/Text&gt;
+                        &lt;Text style={styles.mentorText}&gt;Mentor: {item.mentor}&lt;/Text&gt;
+
+                        &lt;View style={styles.cardFooter}&gt;
+                            &lt;Text style={styles.durationText}&gt;⏱ {item.duration}&lt;/Text&gt;
+                            &lt;Text style={styles.actionLink}&gt;Lihat Detail →&lt;/Text&gt;
+                        &lt;/View&gt;
+                    &lt;/TouchableOpacity&gt;
+                )}
+            /&gt;
+        &lt;/View&gt;
+    );
+}
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 16,
+        backgroundColor: '#0f172a',
+    },
+    header: {
+        marginBottom: 20,
+        marginTop: 8,
+    },
+    subtitle: {
+        fontSize: 12,
+        fontWeight: 'bold',
+        color: '#7c3aed',
+        letterSpacing: 1,
+        marginBottom: 4,
+    },
+    title: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        color: '#f8fafc',
+        marginBottom: 6,
+    },
+    infoText: {
+        fontSize: 13,
+        color: '#94a3b8',
+    },
+    listContent: {
+        gap: 14,
+        paddingBottom: 24,
+    },
+    card: {
+        backgroundColor: '#1e293b',
+        borderRadius: 16,
+        padding: 18,
+        borderWidth: 1,
+        borderColor: '#334155',
+    },
+    cardHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 10,
+    },
+    badge: {
+        backgroundColor: '#7c3aed',
+        color: '#fff',
+        fontSize: 11,
+        fontWeight: 'bold',
+        paddingHorizontal: 10,
+        paddingVertical: 4,
+        borderRadius: 8,
+    },
+    levelText: {
+        fontSize: 12,
+        color: '#38bdf8',
+        fontWeight: '500',
+    },
+    cardTitle: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#f8fafc',
+        marginBottom: 6,
+    },
+    mentorText: {
+        fontSize: 13,
+        color: '#cbd5e1',
+        marginBottom: 14,
+    },
+    cardFooter: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        borderTopWidth: 1,
+        borderTopColor: '#334155',
+        paddingTop: 12,
+    },
+    durationText: {
+        fontSize: 12,
+        color: '#94a3b8',
+    },
+    actionLink: {
+        fontSize: 13,
+        color: '#38bdf8',
+        fontWeight: 'bold',
+    },
+});</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- File 5: app/detail/[id].tsx -->
+                        <div class="mb-4">
+                            <div class="d-flex align-items-center justify-content-between bg-dark p-3 rounded-top border border-secondary border-bottom-0">
+                                <div>
+                                    <span class="badge bg-warning text-dark me-2">File 5</span>
+                                    <strong class="text-white"><i class="bi bi-filetype-tsx me-1 text-warning"></i>app/detail/[id].tsx</strong>
+                                </div>
+                                <span class="small text-secondary">Halaman Detail Dinamis (Passing Params)</span>
+                            </div>
+                            <div class="p-4 bg-dark-lighter border border-secondary rounded-bottom">
+                                <p class="text-light-50 small mb-2"><i class="bi bi-folder-plus me-1 text-warning"></i>Buat folder <code>app/detail/</code> lalu buat file <code>[id].tsx</code> (wajib pakai kurung siku!):</p>
+                                <pre><code class="language-typescript">// app/detail/[id].tsx
+import React from 'react';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import { useLocalSearchParams, router } from 'expo-router';
+import { COURSES } from '../../src/data/courses.data';
+
+export default function DetailScreen() {
+    // 1. Tangkap parameter id dari URL dinamis
+    const { id } = useLocalSearchParams&lt;{ id: string }&gt;();
+
+    // 2. Cari kursus yang memiliki ID sesuai parameter
+    const course = COURSES.find((c) => c.id === id);
+
+    if (!course) {
+        return (
+            &lt;View style={styles.centerContainer}&gt;
+                &lt;Text style={styles.notFoundText}&gt;Kursus tidak ditemukan!&lt;/Text&gt;
+                &lt;TouchableOpacity style={styles.backBtn} onPress={() => router.back()}&gt;
+                    &lt;Text style={styles.backBtnText}&gt;Kembali ke Katalog&lt;/Text&gt;
+                &lt;/TouchableOpacity&gt;
+            &lt;/View&gt;
+        );
+    }
+
+    return (
+        &lt;ScrollView style={styles.container} contentContainerStyle={styles.content}&gt;
+            &lt;View style={styles.badgeRow}&gt;
+                &lt;Text style={styles.badge}&gt;{course.category}&lt;/Text&gt;
+                &lt;Text style={styles.levelBadge}&gt;{course.level}&lt;/Text&gt;
+            &lt;/View&gt;
+
+            &lt;Text style={styles.title}&gt;{course.title}&lt;/Text&gt;
+
+            &lt;View style={styles.infoBox}&gt;
+                &lt;View style={styles.infoItem}&gt;
+                    &lt;Text style={styles.infoLabel}&gt;Mentor Pengampu:&lt;/Text&gt;
+                    &lt;Text style={styles.infoValue}&gt;{course.mentor}&lt;/Text&gt;
+                &lt;/View&gt;
+                &lt;View style={styles.infoItem}&gt;
+                    &lt;Text style={styles.infoLabel}&gt;Total Durasi:&lt;/Text&gt;
+                    &lt;Text style={styles.infoValue}&gt;{course.duration}&lt;/Text&gt;
+                &lt;/View&gt;
+            &lt;/View&gt;
+
+            &lt;Text style={styles.sectionHeader}&gt;Deskripsi Kurikulum:&lt;/Text&gt;
+            &lt;Text style={styles.descText}&gt;{course.description}&lt;/Text&gt;
+
+            &lt;View style={styles.actionContainer}&gt;
+                &lt;TouchableOpacity
+                    style={styles.enrollBtn}
+                    onPress={() => Alert.alert('Sukses', 'Kamu telah terdaftar di kelas ' + course.title + '!')}
+                &gt;
+                    &lt;Text style={styles.enrollText}&gt;Ambil Kelas Ini Sekarang&lt;/Text&gt;
+                &lt;/TouchableOpacity&gt;
+
+                &lt;TouchableOpacity style={styles.cancelBtn} onPress={() => router.back()}&gt;
+                    &lt;Text style={styles.cancelText}&gt;← Kembali ke Katalog&lt;/Text&gt;
+                &lt;/TouchableOpacity&gt;
+            &lt;/View&gt;
+        &lt;/ScrollView&gt;
+    );
+}
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#0f172a',
+    },
+    content: {
+        padding: 20,
+    },
+    centerContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#0f172a',
+        padding: 20,
+    },
+    notFoundText: {
+        fontSize: 18,
+        color: '#f87171',
+        marginBottom: 16,
+    },
+    badgeRow: {
+        flexDirection: 'row',
+        gap: 10,
+        marginBottom: 14,
+    },
+    badge: {
+        backgroundColor: '#7c3aed',
+        color: '#fff',
+        fontSize: 12,
+        fontWeight: 'bold',
+        paddingHorizontal: 12,
+        paddingVertical: 5,
+        borderRadius: 8,
+    },
+    levelBadge: {
+        backgroundColor: 'rgba(56, 189, 248, 0.15)',
+        color: '#38bdf8',
+        fontSize: 12,
+        fontWeight: '600',
+        paddingHorizontal: 12,
+        paddingVertical: 5,
+        borderRadius: 8,
+        borderWidth: 1,
+        borderColor: 'rgba(56, 189, 248, 0.3)',
+    },
+    title: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        color: '#f8fafc',
+        marginBottom: 20,
+        lineHeight: 32,
+    },
+    infoBox: {
+        backgroundColor: '#1e293b',
+        borderRadius: 14,
+        padding: 16,
+        marginBottom: 24,
+        borderWidth: 1,
+        borderColor: '#334155',
+        gap: 12,
+    },
+    infoItem: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    infoLabel: {
+        fontSize: 13,
+        color: '#94a3b8',
+    },
+    infoValue: {
+        fontSize: 13,
+        color: '#f8fafc',
+        fontWeight: 'bold',
+    },
+    sectionHeader: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: '#f8fafc',
+        marginBottom: 8,
+    },
+    descText: {
+        fontSize: 14,
+        color: '#cbd5e1',
+        lineHeight: 22,
+        marginBottom: 30,
+    },
+    actionContainer: {
+        gap: 12,
+    },
+    enrollBtn: {
+        backgroundColor: '#7c3aed',
+        paddingVertical: 16,
+        borderRadius: 14,
+        alignItems: 'center',
+    },
+    enrollText: {
+        color: '#fff',
+        fontWeight: 'bold',
+        fontSize: 15,
+    },
+    cancelBtn: {
+        paddingVertical: 14,
+        borderRadius: 14,
+        alignItems: 'center',
+        borderWidth: 1,
+        borderColor: '#334155',
+    },
+    cancelText: {
+        color: '#94a3b8',
+        fontWeight: '600',
+        fontSize: 14,
+    },
+    backBtn: {
+        backgroundColor: '#334155',
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        borderRadius: 10,
+    },
+    backBtnText: {
+        color: '#f8fafc',
+        fontWeight: 'bold',
+    },
+});</code></pre>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Tahap 3: Hasil Preview Layar Smartphone -->
+                    <section class="mb-5 pb-4 border-bottom border-secondary">
+                        <div class="d-flex align-items-center mb-3">
+                            <span class="badge bg-primary fs-6 me-3">Tahap 3</span>
+                            <h2 class="fw-bold mb-0 text-primary">Hasil Preview Alur Navigasi (List → Detail)</h2>
+                        </div>
+                        <p class="text-light-50 fs-5 mb-4">
+                            Berikut visualisasi transisi layar saat kartu kursus di-klik di HP kamu via Expo Go:
+                        </p>
+
+                        <div class="row g-4 justify-content-center">
+                            <!-- Mockup 1: Halaman List -->
+                            <div class="col-md-6 mb-4">
+                                <div class="p-3 bg-dark border border-secondary rounded text-center">
+                                    <h6 class="text-info fw-bold mb-3"><i class="bi bi-phone me-2"></i>Layar 1: Beranda (app/index.tsx)</h6>
+                                    
+                                    <div class="phone-mockup">
+                                        <div class="phone-notch"><div class="phone-notch-camera"></div></div>
+                                        <div class="phone-screen text-start">
+                                            <div class="p-2 border-bottom border-secondary mb-3 d-flex justify-content-between">
+                                                <strong class="text-white small">Katalog Kursus BPROTIC</strong>
+                                                <span class="text-info small">3 Kelas</span>
+                                            </div>
+
+                                            <div class="p-3 rounded-3 mb-2" style="background: #1e293b; border: 1px solid #7c3aed;">
+                                                <span class="badge mb-1" style="background: #7c3aed; font-size: 9px;">Web Development</span>
+                                                <div class="text-white fw-bold small">Backend Web & REST API</div>
+                                                <div class="text-secondary small" style="font-size: 10px;">Mentor: Ahmad Farras</div>
+                                                <div class="text-info small fw-bold text-end mt-1" style="font-size: 10px;">Lihat Detail →</div>
+                                            </div>
+
+                                            <div class="p-3 rounded-3 mb-2" style="background: #1e293b; border: 1px solid #334155;">
+                                                <span class="badge mb-1" style="background: #7c3aed; font-size: 9px;">Mobile Track</span>
+                                                <div class="text-white fw-bold small">React Native & Expo</div>
+                                                <div class="text-secondary small" style="font-size: 10px;">Mentor: Mobile Lead</div>
+                                                <div class="text-info small fw-bold text-end mt-1" style="font-size: 10px;">Lihat Detail →</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Mockup 2: Halaman Detail -->
+                            <div class="col-md-6 mb-4">
+                                <div class="p-3 bg-dark border border-info rounded text-center">
+                                    <h6 class="text-warning fw-bold mb-3"><i class="bi bi-phone me-2"></i>Layar 2: Detail (app/detail/[id].tsx)</h6>
+                                    
+                                    <div class="phone-mockup">
+                                        <div class="phone-notch"><div class="phone-notch-camera"></div></div>
+                                        <div class="phone-screen text-start">
+                                            <div class="p-2 border-bottom border-secondary mb-3 d-flex align-items-center">
+                                                <span class="text-info me-2 small fw-bold">← Kembali</span>
+                                                <strong class="text-white small">Rincian Kursus</strong>
+                                            </div>
+
+                                            <span class="badge mb-2" style="background: #7c3aed; font-size: 9px;">Web Development</span>
+                                            <h6 class="fw-bold text-white mb-2">Backend Web & REST API</h6>
+                                            
+                                            <div class="p-2 rounded-3 mb-3 small" style="background: #1e293b; border: 1px solid #334155; font-size: 10px;">
+                                                <div><span class="text-secondary">Mentor:</span> Ahmad Farras</div>
+                                                <div><span class="text-secondary">Durasi:</span> 10 Pertemuan</div>
+                                            </div>
+
+                                            <p class="text-secondary small mb-3" style="font-size: 10px; line-height: 1.4;">
+                                                Pelajari dasar PHP native, MySQL, arsitektur MVC, hingga pembuatan REST API production-ready menggunakan framework Laravel 11.
+                                            </p>
+
+                                            <div class="btn btn-sm w-100 text-white fw-bold py-2 rounded-3" style="background: #7c3aed; font-size: 11px;">
+                                                Ambil Kelas Ini Sekarang
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Tugas Studi Kasus Modul 3 Mobile -->
+                    <section class="mt-5 pt-3">
+                        <div class="card bg-primary bg-opacity-10 border-primary border-2 shadow-lg">
+                            <div class="card-body p-5">
+                                <h3 class="fw-bold text-primary mb-4"><i class="bi bi-journal-code me-3"></i>Tugas & Studi Kasus: Modul 3 Mobile</h3>
+                                <p class="text-light-50 mb-4 fs-5">
+                                    Buatlah aplikasi <strong>Katalog Kuliner Nusantara</strong> multi-halaman dengan alur navigasi List → Detail:
+                                </p>
+                                
+                                <div class="p-4 bg-dark-lighter rounded border border-secondary">
+                                    <ol class="text-light-50 lh-lg fs-5 mb-0">
+                                        <li class="mb-3">Buat model data <code>FoodItem</code> di <code>src/types/food.types.ts</code> (id, nama, asal_kota, estimasi_harga, resep_deskripsi).</li>
+                                        <li class="mb-3">Buat data array minimal <strong>4 kuliner khas daerah</strong> di <code>src/data/food.data.ts</code>.</li>
+                                        <li class="mb-3">Di <code>app/index.tsx</code>, tampilkan kartu makanan dalam format FlatList. Ketika salah satu makanan diklik, lakukan navigasi menggunakan <code>router.push('/detail/' + item.id)</code>.</li>
+                                        <li class="mb-3">Di <code>app/detail/[id].tsx</code>, tangkap parameter ID, tampilkan seluruh rincian kuliner dan bahan-bahannya, serta sediakan tombol kembali.</li>
+                                        <li>Jalankan di smartphone fisik via <strong>Expo Go</strong> dan demonstrasikan transisi navigasinya!</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                `
+            },
             "4": { title: "Component & Struktur Code Modular", subtitle: "Reusable component, pemisahan UI dan logic, folder structure, dan separation of concern." },
             "5": { title: "CRUD Lokal & Local Storage (AsyncStorage)", subtitle: "State management, CRUD lokal array/object, dan persistence data device." },
             "6": { title: "HTTP & Consume REST API Laravel", subtitle: "Konsep HTTP request, JSON, fetch/axios, async/await, dan integrasi API Laravel." },
@@ -1056,7 +1722,426 @@ ionic serve</code></pre>
                 `
             },
             "2": { title: "UI, Data Binding & Interaction", subtitle: "Komponen UI Ionic, data binding, interpolasi data, dan event handling." },
-            "3": { title: "Navigation & Multi Page", subtitle: "Membuat halaman baru, routing, passing data antar-page, alur list detail." },
+            "3": {
+                title: "Navigation & Multi Page (Ionic React Navigation)",
+                subtitle: "IonReactRouter, IonRouterOutlet, dynamic route /detail/:id, useParams, IonBackButton, dan alur list-detail.",
+                content: `
+                    <!-- Pengantar Materi -->
+                    <section class="mb-5">
+                        <div class="card bg-dark-lighter border-info shadow-sm">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <i class="bi bi-compass-fill fs-2 text-info me-3"></i>
+                                    <h4 class="fw-bold mb-0 text-white">Apa yang Dipelajari di Pertemuan 3 Ionic?</h4>
+                                </div>
+                                <p class="text-light-50 fs-5 mb-3">
+                                    Di ekosistem <strong>Ionic Framework</strong>, sistem navigasi dibangun di atas <code>@ionic/react-router</code> (pengembangan dari React Router DOM). Ionic menyediakan transisi layar animasi mobile yang elegan serta komponen tombol kembali (Back Button) bawaan iOS dan Android.
+                                </p>
+                                <div class="row g-3 mt-1">
+                                    <div class="col-md-4">
+                                        <div class="p-3 bg-dark rounded border border-secondary h-100">
+                                            <h6 class="text-info fw-bold"><i class="bi bi-diagram-3 me-2"></i>IonRouterOutlet</h6>
+                                            <p class="small text-light-50 mb-0">Wadah utama tempat bertukarnya halaman (screen stack) dengan animasi transisi native.</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="p-3 bg-dark rounded border border-secondary h-100">
+                                            <h6 class="text-primary fw-bold"><i class="bi bi-link-45deg me-2"></i>routerLink Prop</h6>
+                                            <p class="small text-light-50 mb-0">Komponen seperti <code>&lt;IonItem&gt;</code> dan <code>&lt;IonButton&gt;</code> memiliki prop bawaan <code>routerLink</code> untuk berpindah halaman tanpa reload.</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="p-3 bg-dark rounded border border-secondary h-100">
+                                            <h6 class="text-success fw-bold"><i class="bi bi-arrow-left-circle me-2"></i>IonBackButton</h6>
+                                            <p class="small text-light-50 mb-0">Tombol kembali otomatis yang mengenali riwayat halaman sebelumnya secara cerdas.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Tahap 1: Struktur File Maintainable Ionic -->
+                    <section class="mb-5 pb-4 border-bottom border-secondary">
+                        <div class="d-flex align-items-center mb-3">
+                            <span class="badge bg-primary fs-6 me-3">Tahap 1</span>
+                            <h2 class="fw-bold mb-0 text-primary">Struktur Folder Maintainable Ionic Multi-Page</h2>
+                        </div>
+                        <p class="text-light-50 fs-5 mb-4">
+                            Buka project <code>bprotic-ionic</code> kamu (di <code>D:\\Projects\\bprotic-ionic\\</code> atau <code>C:\\Projects\\bprotic-ionic\\</code>). Susun file berikut:
+                        </p>
+
+                        <div class="card bg-dark-lighter border-secondary mb-4 shadow-sm">
+                            <div class="card-body p-4">
+                                <h6 class="text-info fw-bold mb-3"><i class="bi bi-folder-symlink me-2"></i>Pohon Struktur File:</h6>
+                                <pre><code class="language-bash">bprotic-ionic/
+├── src/
+│   ├── types/
+│   │   └── course.types.ts     # [TYPES] Interface TypeScript CourseItem
+│   ├── data/
+│   │   └── courses.data.ts     # [DATA] Array mock data kursus
+│   ├── pages/
+│   │   ├── Home.tsx            # [HALAMAN 1] Layar Utama List Kursus
+│   │   └── Detail.tsx          # [HALAMAN 2] Layar Detail dengan useParams & IonBackButton
+│   └── App.tsx                 # [ROUTER SETUP] Setup IonApp, IonReactRouter, & Route
+├── capacitor.config.ts
+└── package.json</code></pre>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Tahap 2: Implementasi File per File -->
+                    <section class="mb-5 pb-4 border-bottom border-secondary">
+                        <div class="d-flex align-items-center mb-3">
+                            <span class="badge bg-primary fs-6 me-3">Tahap 2</span>
+                            <h2 class="fw-bold mb-0 text-primary">Implementasi Kode Lengkap per File</h2>
+                        </div>
+
+                        <!-- File 1: src/types/course.types.ts -->
+                        <div class="mb-4">
+                            <div class="d-flex align-items-center justify-content-between bg-dark p-3 rounded-top border border-secondary border-bottom-0">
+                                <div>
+                                    <span class="badge bg-info text-dark me-2">File 1</span>
+                                    <strong class="text-white"><i class="bi bi-file-earmark-code me-1 text-info"></i>src/types/course.types.ts</strong>
+                                </div>
+                                <span class="small text-secondary">Definisi Model Tipe Data</span>
+                            </div>
+                            <div class="p-4 bg-dark-lighter border border-secondary rounded-bottom">
+                                <p class="text-light-50 small mb-2"><i class="bi bi-folder-plus me-1 text-warning"></i>Buat folder <code>src/types/</code> lalu buat file <code>course.types.ts</code>:</p>
+                                <pre><code class="language-typescript">// src/types/course.types.ts
+export interface CourseItem {
+    id: string;
+    title: string;
+    category: string;
+    level: string;
+    mentor: string;
+    description: string;
+    duration: string;
+}</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- File 2: src/data/courses.data.ts -->
+                        <div class="mb-4">
+                            <div class="d-flex align-items-center justify-content-between bg-dark p-3 rounded-top border border-secondary border-bottom-0">
+                                <div>
+                                    <span class="badge bg-primary me-2">File 2</span>
+                                    <strong class="text-white"><i class="bi bi-file-earmark-code me-1 text-primary"></i>src/data/courses.data.ts</strong>
+                                </div>
+                                <span class="small text-secondary">Mock Data Array Kursus</span>
+                            </div>
+                            <div class="p-4 bg-dark-lighter border border-secondary rounded-bottom">
+                                <p class="text-light-50 small mb-2"><i class="bi bi-folder-plus me-1 text-warning"></i>Buat folder <code>src/data/</code> lalu buat file <code>courses.data.ts</code>:</p>
+                                <pre><code class="language-typescript">// src/data/courses.data.ts
+import { CourseItem } from '../types/course.types';
+
+export const COURSES: CourseItem[] = [
+    {
+        id: '1',
+        title: 'Backend Web & Laravel REST API',
+        category: 'Web Development',
+        level: 'Pemula s/d Mahir',
+        mentor: 'Ahmad Farras',
+        duration: '10 Pertemuan',
+        description: 'Membangun API menggunakan PHP, MySQL, MVC, dan Laravel 11.'
+    },
+    {
+        id: '2',
+        title: 'Ionic & Capacitor Hybrid Mobile',
+        category: 'Mobile Track',
+        level: 'Pemula s/d Menengah',
+        mentor: 'Ionic Lead BPROTIC',
+        duration: '10 Pertemuan',
+        description: 'Membangun aplikasi hybrid cross-platform dengan Ionic React dan Capacitor.'
+    }
+];</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- File 3: src/pages/Home.tsx -->
+                        <div class="mb-4">
+                            <div class="d-flex align-items-center justify-content-between bg-dark p-3 rounded-top border border-secondary border-bottom-0">
+                                <div>
+                                    <span class="badge bg-warning text-dark me-2">File 3</span>
+                                    <strong class="text-white"><i class="bi bi-filetype-tsx me-1 text-warning"></i>src/pages/Home.tsx</strong>
+                                </div>
+                                <span class="small text-secondary">Layar List Katalog (Home Screen)</span>
+                            </div>
+                            <div class="p-4 bg-dark-lighter border border-secondary rounded-bottom">
+                                <p class="text-light-50 small mb-2"><i class="bi bi-file-earmark me-1 text-info"></i>Buat file <code>src/pages/Home.tsx</code>:</p>
+                                <pre><code class="language-typescript">// src/pages/Home.tsx
+import React from 'react';
+import {
+    IonPage,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    IonList,
+    IonItem,
+    IonLabel,
+    IonBadge,
+    IonNote
+} from '@ionic/react';
+import { COURSES } from '../data/courses.data';
+
+export const Home: React.FC = () => {
+    return (
+        &lt;IonPage&gt;
+            &lt;IonHeader&gt;
+                &lt;IonToolbar color="dark"&gt;
+                    &lt;IonTitle&gt;Katalog Kursus BPROTIC&lt;/IonTitle&gt;
+                &lt;/IonToolbar&gt;
+            &lt;/IonHeader&gt;
+            &lt;IonContent className="ion-padding" color="dark"&gt;
+                &lt;h2 style={{ color: '#38bdf8', fontWeight: 'bold', marginTop: '10px' }}&gt;
+                    Pilih Jalur Belajar 🚀
+                &lt;/h2&gt;
+                &lt;p style={{ color: '#94a3b8', fontSize: '14px', marginBottom: '20px' }}&gt;
+                    Klik pada salah satu kursus di bawah untuk membaca rincian lengkapnya:
+                &lt;/p&gt;
+
+                &lt;IonList inset={true} style={{ background: '#1e293b', borderRadius: '16px' }}&gt;
+                    {COURSES.map((course) => (
+                        &lt;IonItem
+                            key={course.id}
+                            routerLink={'/detail/' + course.id}
+                            detail={true}
+                            style={{ '--background': '#1e293b', '--color': '#f8fafc' }}
+                        &gt;
+                            &lt;IonLabel&gt;
+                                &lt;h3 style={{ fontWeight: 'bold', fontSize: '16px', color: '#f8fafc' }}&gt;
+                                    {course.title}
+                                &lt;/h3&gt;
+                                &lt;p style={{ color: '#94a3b8' }}&gt;Mentor: {course.mentor}&lt;/p&gt;
+                                &lt;IonNote style={{ color: '#38bdf8' }}&gt;⏱ {course.duration}&lt;/IonNote&gt;
+                            &lt;/IonLabel&gt;
+                            &lt;IonBadge slot="end" color="primary"&gt;
+                                {course.category}
+                            &lt;/IonBadge&gt;
+                        &lt;/IonItem&gt;
+                    ))}
+                &lt;/IonList&gt;
+            &lt;/IonContent&gt;
+        &lt;/IonPage&gt;
+    );
+};
+export default Home;</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- File 4: src/pages/Detail.tsx -->
+                        <div class="mb-4">
+                            <div class="d-flex align-items-center justify-content-between bg-dark p-3 rounded-top border border-secondary border-bottom-0">
+                                <div>
+                                    <span class="badge bg-success me-2">File 4</span>
+                                    <strong class="text-white"><i class="bi bi-filetype-tsx me-1 text-success"></i>src/pages/Detail.tsx</strong>
+                                </div>
+                                <span class="small text-secondary">Layar Detail dengan useParams & IonBackButton</span>
+                            </div>
+                            <div class="p-4 bg-dark-lighter border border-secondary rounded-bottom">
+                                <p class="text-light-50 small mb-2"><i class="bi bi-file-earmark me-1 text-info"></i>Buat file <code>src/pages/Detail.tsx</code>:</p>
+                                <pre><code class="language-typescript">// src/pages/Detail.tsx
+import React from 'react';
+import {
+    IonPage,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    IonButtons,
+    IonBackButton,
+    IonCard,
+    IonCardHeader,
+    IonCardSubtitle,
+    IonCardTitle,
+    IonCardContent,
+    IonButton
+} from '@ionic/react';
+import { useParams } from 'react-router-dom';
+import { COURSES } from '../data/courses.data';
+
+export const Detail: React.FC = () => {
+    // 1. Ambil id dari parameter URL
+    const { id } = useParams&lt;{ id: string }&gt;();
+
+    // 2. Cocokkan dengan data kursus
+    const course = COURSES.find((c) => c.id === id);
+
+    return (
+        &lt;IonPage&gt;
+            &lt;IonHeader&gt;
+                &lt;IonToolbar color="dark"&gt;
+                    &lt;IonButtons slot="start"&gt;
+                        {/* Tombol Back otomatis bawaan Ionic */}
+                        &lt;IonBackButton defaultHref="/home" text="Kembali" /&gt;
+                    &lt;/IonButtons&gt;
+                    &lt;IonTitle&gt;Rincian Kursus&lt;/IonTitle&gt;
+                &lt;/IonToolbar&gt;
+            &lt;/IonHeader&gt;
+            &lt;IonContent className="ion-padding" color="dark"&gt;
+                {course ? (
+                    &lt;IonCard style={{ background: '#1e293b', borderRadius: '16px', border: '1px solid #334155' }}&gt;
+                        &lt;IonCardHeader&gt;
+                            &lt;IonCardSubtitle style={{ color: '#38bdf8' }}&gt;
+                                {course.category} • {course.level}
+                            &lt;/IonCardSubtitle&gt;
+                            &lt;IonCardTitle style={{ color: '#f8fafc', fontWeight: 'bold' }}&gt;
+                                {course.title}
+                            &lt;/IonCardTitle&gt;
+                        &lt;/IonCardHeader&gt;
+                        &lt;IonCardContent style={{ color: '#cbd5e1', lineHeight: '1.6' }}&gt;
+                            &lt;p style={{ marginBottom: '12px' }}&gt;
+                                &lt;strong&gt;Mentor:&lt;/strong&gt; {course.mentor}&lt;br /&gt;
+                                &lt;strong&gt;Durasi:&lt;/strong&gt; {course.duration}
+                            &lt;/p&gt;
+                            &lt;hr style={{ borderColor: '#334155' }} /&gt;
+                            &lt;p style={{ marginTop: '12px' }}&gt;{course.description}&lt;/p&gt;
+                            &lt;IonButton expand="block" color="primary" style={{ marginTop: '24px' }}&gt;
+                                Ambil Kursus Ini
+                            &lt;/IonButton&gt;
+                        &lt;/IonCardContent&gt;
+                    &lt;/IonCard&gt;
+                ) : (
+                    &lt;p style={{ color: '#f87171', textAlign: 'center', marginTop: '40px' }}&gt;
+                        Kursus tidak ditemukan!
+                    &lt;/p&gt;
+                )}
+            &lt;/IonContent&gt;
+        &lt;/IonPage&gt;
+    );
+};
+export default Detail;</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- File 5: src/App.tsx -->
+                        <div class="mb-4">
+                            <div class="d-flex align-items-center justify-content-between bg-dark p-3 rounded-top border border-secondary border-bottom-0">
+                                <div>
+                                    <span class="badge bg-info text-dark me-2">File 5</span>
+                                    <strong class="text-white"><i class="bi bi-filetype-tsx me-1 text-info"></i>src/App.tsx</strong>
+                                </div>
+                                <span class="small text-secondary">Setup IonReactRouter & Daftar Rute</span>
+                            </div>
+                            <div class="p-4 bg-dark-lighter border border-secondary rounded-bottom">
+                                <p class="text-light-50 small mb-2"><i class="bi bi-file-earmark me-1 text-info"></i>Di <code>src/App.tsx</code>, daftarkan rute <code>/home</code> dan <code>/detail/:id</code>:</p>
+                                <pre><code class="language-typescript">// src/App.tsx
+import React from 'react';
+import { Redirect, Route } from 'react-router-dom';
+import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
+import { IonReactRouter } from '@ionic/react-router';
+import Home from './pages/Home';
+import Detail from './pages/Detail';
+
+/* Core CSS required for Ionic components to work properly */
+import '@ionic/react/css/core.css';
+import '@ionic/react/css/normalize.css';
+import '@ionic/react/css/structure.css';
+import '@ionic/react/css/typography.css';
+
+setupIonicReact();
+
+const App: React.FC = () => (
+    &lt;IonApp&gt;
+        &lt;IonReactRouter&gt;
+            &lt;IonRouterOutlet&gt;
+                &lt;Route exact path="/home" component={Home} /&gt;
+                &lt;Route exact path="/detail/:id" component={Detail} /&gt;
+                &lt;Route exact path="/"&gt;
+                    &lt;Redirect to="/home" /&gt;
+                &lt;/Route&gt;
+            &lt;/IonRouterOutlet&gt;
+        &lt;/IonReactRouter&gt;
+    &lt;/IonApp&gt;
+);
+
+export default App;</code></pre>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Tahap 3: Mockup Preview Ionic -->
+                    <section class="mb-5 pb-4 border-bottom border-secondary">
+                        <div class="d-flex align-items-center mb-3">
+                            <span class="badge bg-primary fs-6 me-3">Tahap 3</span>
+                            <h2 class="fw-bold mb-0 text-primary">Hasil Preview Layar Smartphone (Ionic Navigation)</h2>
+                        </div>
+                        <div class="row g-4 justify-content-center">
+                            <div class="col-md-6 mb-4">
+                                <div class="p-3 bg-dark border border-secondary rounded text-center">
+                                    <h6 class="text-info fw-bold mb-3"><i class="bi bi-phone me-2"></i>Layar 1: List (Home.tsx)</h6>
+                                    <div class="phone-mockup">
+                                        <div class="phone-notch"><div class="phone-notch-camera"></div></div>
+                                        <div class="phone-screen text-start">
+                                            <div class="p-2 border-bottom border-secondary mb-3 d-flex justify-content-between">
+                                                <strong class="text-white small">Katalog Kursus BPROTIC</strong>
+                                                <span class="badge bg-primary" style="font-size: 8px;">Ionic</span>
+                                            </div>
+                                            <div class="p-2 rounded-2 mb-2 d-flex justify-content-between align-items-center" style="background: #1e293b; border: 1px solid #334155;">
+                                                <div>
+                                                    <div class="text-white fw-bold small">Backend Web & REST API</div>
+                                                    <div class="text-secondary small" style="font-size: 9px;">Mentor: Ahmad Farras</div>
+                                                </div>
+                                                <span class="text-info small fw-bold">›</span>
+                                            </div>
+                                            <div class="p-2 rounded-2 mb-2 d-flex justify-content-between align-items-center" style="background: #1e293b; border: 1px solid #334155;">
+                                                <div>
+                                                    <div class="text-white fw-bold small">Ionic & Capacitor Mobile</div>
+                                                    <div class="text-secondary small" style="font-size: 9px;">Mentor: Ionic Lead</div>
+                                                </div>
+                                                <span class="text-info small fw-bold">›</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <div class="p-3 bg-dark border border-info rounded text-center">
+                                    <h6 class="text-warning fw-bold mb-3"><i class="bi bi-phone me-2"></i>Layar 2: Detail (Detail.tsx)</h6>
+                                    <div class="phone-mockup">
+                                        <div class="phone-notch"><div class="phone-notch-camera"></div></div>
+                                        <div class="phone-screen text-start">
+                                            <div class="p-2 border-bottom border-secondary mb-3 d-flex align-items-center">
+                                                <span class="text-info me-2 small fw-bold">‹ Kembali</span>
+                                                <strong class="text-white small">Rincian Kursus</strong>
+                                            </div>
+                                            <div class="p-3 rounded-3" style="background: #1e293b; border: 1px solid #334155;">
+                                                <span class="badge bg-info text-dark mb-1" style="font-size: 8px;">Web Development</span>
+                                                <h6 class="fw-bold text-white small mb-1">Backend Web & Laravel REST API</h6>
+                                                <p class="text-secondary small mb-2" style="font-size: 9px;">Membangun API menggunakan PHP, MySQL, MVC, dan Laravel 11.</p>
+                                                <div class="btn btn-primary btn-sm w-100 py-1" style="font-size: 10px;">Ambil Kursus Ini</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Tugas Studi Kasus Modul 3 Ionic -->
+                    <section class="mt-5 pt-3">
+                        <div class="card bg-primary bg-opacity-10 border-primary border-2 shadow-lg">
+                            <div class="card-body p-5">
+                                <h3 class="fw-bold text-primary mb-4"><i class="bi bi-journal-code me-3"></i>Tugas & Studi Kasus: Modul 3 Ionic</h3>
+                                <p class="text-light-50 mb-4 fs-5">
+                                    Kembangkan aplikasi di atas menjadi <strong>Katalog Acara & Workshop BPROTIC (Event Directory)</strong> dengan fitur:
+                                </p>
+                                <div class="p-4 bg-dark-lighter rounded border border-secondary">
+                                    <ol class="text-light-50 lh-lg fs-5 mb-0">
+                                        <li class="mb-3">Buat model <code>EventItem</code> di <code>src/types/event.types.ts</code> (id, nama_acara, tanggal, pemateri, kuota, lokasi).</li>
+                                        <li class="mb-3">Buat minimal <strong>3 data acara</strong> di <code>src/data/events.data.ts</code>.</li>
+                                        <li class="mb-3">Buat halaman List di <code>Home.tsx</code> dengan komponen <code>IonList</code> dan <code>routerLink</code>.</li>
+                                        <li class="mb-3">Buat halaman Detail di <code>Detail.tsx</code> dengan <code>IonBackButton</code> dan tombol konfirmasi "Daftar Acara".</li>
+                                        <li>Jalankan di browser menggunakan <code>ionic serve</code> dan uji transisi navigasinya!</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                `
+            },
             "4": { title: "Service & Struktur Code", subtitle: "Service pattern, separation of concern, struktur code modular." },
             "5": { title: "CRUD Lokal & Local Storage", subtitle: "CRUD sederhana, penyimpanan data lokal, persistence data device." },
             "6": { title: "HTTP & Consume REST API", subtitle: "HTTP request, JSON, GET API, service consume API Laravel." },
