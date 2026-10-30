@@ -191,10 +191,13 @@ function initBackgroundParticles() {
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
             createParticles();
+            createCodeSnippets();
         }, 150);
     });
 
-    // Particle Configuration
+    // ==========================================
+    // 1. PARTICLES (Titik Galaxy & Konstelasi)
+    // ==========================================
     let particles = [];
     const getParticleCount = () => {
         if (window.innerWidth < 768) return 35;
@@ -216,21 +219,17 @@ function initBackgroundParticles() {
         }
 
         update() {
-            // Move particle
             this.x += this.vx;
             this.y += this.vy;
 
-            // Subtle pulsing of size
             this.pulseAngle += this.pulseSpeed;
             this.radius = this.baseRadius + Math.sin(this.pulseAngle) * 0.6;
 
-            // Bounce off edges gently
             if (this.x < 0) { this.x = 0; this.vx *= -1; }
             if (this.x > width) { this.x = width; this.vx *= -1; }
             if (this.y < 0) { this.y = 0; this.vy *= -1; }
             if (this.y > height) { this.y = height; this.vy *= -1; }
 
-            // Mouse interaction (repulsion & connection)
             if (mouse.x !== null && mouse.y !== null) {
                 const dx = mouse.x - this.x;
                 const dy = mouse.y - this.y;
@@ -239,7 +238,6 @@ function initBackgroundParticles() {
                 if (distance < mouse.radius) {
                     const force = (mouse.radius - distance) / mouse.radius;
                     const angle = Math.atan2(dy, dx);
-                    // Push particle slightly away from mouse
                     this.x -= Math.cos(angle) * force * 1.5;
                     this.y -= Math.sin(angle) * force * 1.5;
                 }
@@ -263,7 +261,7 @@ function initBackgroundParticles() {
 
             ctx.fillStyle = color;
             ctx.fill();
-            ctx.shadowBlur = 0; // reset
+            ctx.shadowBlur = 0;
         }
     }
 
@@ -275,7 +273,132 @@ function initBackgroundParticles() {
         }
     }
 
+    // ==========================================
+    // 2. FLOATING CODE SNIPPETS (Bacaan Code Acak Melayang)
+    // ==========================================
+    const CODE_SNIPPETS = [
+        "const [state, setState] = useState()",
+        "<View style={styles.container}>",
+        "Route::get('/api/course', [CourseController::class])",
+        "$conn = new mysqli($host, $user, $pass)",
+        "import { IonPage, IonContent } from '@ionic/react'",
+        "SELECT * FROM courses WHERE status = 'active'",
+        "npm run dev -- --host",
+        "interface StudentItem { id: string; }",
+        "export default function App() {}",
+        "router.push('/detail/' + id)",
+        "<IonButton color='primary'>BPROTIC</IonButton>",
+        "echo json_encode(['status' => 'success'])",
+        "async fetchData(): Promise<void>",
+        "npx expo start --tunnel",
+        "public function store(Request $request)",
+        "{ ...prevState, loading: false }",
+        "git commit -m 'feat: galaxy code'",
+        "<Text style={{ color: '#38bdf8' }}>",
+        "IonRouterOutlet",
+        "useParams<{ id: string }>()",
+        "const db = await mysql.connect()",
+        "return response()->json($data, 200)",
+        "StyleSheet.create({ flex: 1 })",
+        "onIonInput={(e) => setNama(e.detail.value!)}",
+        "bprotic_online_course"
+    ];
+
+    let codeSnippets = [];
+    const getCodeCount = () => {
+        if (window.innerWidth < 768) return 8;
+        if (window.innerWidth < 1200) return 13;
+        return 18;
+    };
+
+    class FloatingCode {
+        constructor() {
+            this.reset(true);
+        }
+
+        reset(randomY = false) {
+            this.text = CODE_SNIPPETS[Math.floor(Math.random() * CODE_SNIPPETS.length)];
+            this.x = Math.random() * (width - 120);
+            this.y = randomY ? Math.random() * height : height + Math.random() * 40;
+            this.vx = (Math.random() - 0.5) * 0.35;
+            this.vy = -(Math.random() * 0.35 + 0.18); // Melayang perlahan ke atas seperti debu kosmik
+            this.fontSize = Math.floor(Math.random() * 3) + 11; // 11, 12, 13px
+            this.baseAlpha = Math.random() * 0.18 + 0.15; // Kepekatan pas: terbaca namun tidak menutupi materi
+            this.alpha = this.baseAlpha;
+            this.pulse = Math.random() * Math.PI * 2;
+            this.pulseSpeed = 0.012 + Math.random() * 0.012;
+            const randColor = Math.random();
+            this.colorType = randColor > 0.65 ? 'cyan' : (randColor > 0.35 ? 'purple' : 'emerald');
+        }
+
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+            this.pulse += this.pulseSpeed;
+
+            const currentBase = this.baseAlpha + Math.sin(this.pulse) * 0.05;
+
+            // Interaksi saat kursor mouse mendekati teks kode
+            if (mouse.x !== null && mouse.y !== null) {
+                const dx = mouse.x - this.x;
+                const dy = mouse.y - this.y;
+                const dist = Math.hypot(dx, dy);
+
+                if (dist < 130) {
+                    const boost = (1 - dist / 130) * 0.45;
+                    this.alpha = Math.min(0.85, currentBase + boost);
+                    // Dorongan halus dari mouse
+                    this.x -= (dx / dist) * 0.8;
+                    this.y -= (dy / dist) * 0.8;
+                } else {
+                    this.alpha = currentBase;
+                }
+            } else {
+                this.alpha = currentBase;
+            }
+
+            // Respawn saat melayang melewati batas atas layar
+            if (this.y < -40 || this.x < -200 || this.x > width + 50) {
+                this.reset(false);
+            }
+        }
+
+        draw(isLight) {
+            ctx.save();
+            ctx.font = `${this.fontSize}px 'Fira Code', 'JetBrains Mono', 'Courier New', monospace`;
+
+            let color;
+            if (isLight) {
+                if (this.colorType === 'cyan') color = `rgba(2, 132, 199, ${this.alpha * 0.95})`;
+                else if (this.colorType === 'purple') color = `rgba(124, 58, 237, ${this.alpha * 0.95})`;
+                else color = `rgba(5, 150, 105, ${this.alpha * 0.95})`;
+                ctx.shadowColor = this.colorType === 'cyan' ? '#0284c7' : '#7c3aed';
+                ctx.shadowBlur = 3;
+            } else {
+                if (this.colorType === 'cyan') color = `rgba(56, 189, 248, ${this.alpha})`;
+                else if (this.colorType === 'purple') color = `rgba(168, 85, 247, ${this.alpha})`;
+                else color = `rgba(52, 211, 153, ${this.alpha})`;
+                ctx.shadowColor = this.colorType === 'cyan' ? '#38bdf8' : '#a855f7';
+                ctx.shadowBlur = 6;
+            }
+
+            ctx.fillStyle = color;
+            ctx.fillText(this.text, this.x, this.y);
+            ctx.restore();
+        }
+    }
+
+    function createCodeSnippets() {
+        codeSnippets = [];
+        const count = getCodeCount();
+        for (let i = 0; i < count; i++) {
+            codeSnippets.push(new FloatingCode());
+        }
+    }
+
+    // Inisialisasi awal
     createParticles();
+    createCodeSnippets();
 
     // Connection lines between particles
     function drawConnections(isLight) {
@@ -286,7 +409,6 @@ function initBackgroundParticles() {
         for (let i = 0; i < particles.length; i++) {
             const p1 = particles[i];
 
-            // Connect to nearby particles
             for (let j = i + 1; j < particles.length; j++) {
                 const p2 = particles[j];
                 const dx = p1.x - p2.x;
@@ -304,7 +426,6 @@ function initBackgroundParticles() {
                 }
             }
 
-            // Connect to mouse cursor
             if (mouse.x !== null && mouse.y !== null) {
                 const dx = p1.x - mouse.x;
                 const dy = p1.y - mouse.y;
@@ -331,11 +452,19 @@ function initBackgroundParticles() {
         const currentTheme = document.documentElement.getAttribute("data-theme") || "dark";
         const isLight = currentTheme === "light";
 
+        // 1. Gambar & update potongan kode acak (background layer)
+        for (let i = 0; i < codeSnippets.length; i++) {
+            codeSnippets[i].update();
+            codeSnippets[i].draw(isLight);
+        }
+
+        // 2. Gambar & update partikel titik galaxy
         for (let i = 0; i < particles.length; i++) {
             particles[i].update();
             particles[i].draw(isLight);
         }
 
+        // 3. Hubungkan garis konstelasi
         drawConnections(isLight);
 
         animationFrameId = requestAnimationFrame(animate);
