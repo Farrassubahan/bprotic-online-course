@@ -5,17 +5,27 @@
 
 // 1. Immediately apply theme before DOMContentLoaded to prevent flash of wrong theme
 (function () {
-    const savedTheme = localStorage.getItem("bprotic_theme") || "dark";
-    document.documentElement.setAttribute("data-theme", savedTheme);
+    try {
+        const savedTheme = localStorage.getItem("bprotic_theme") || "dark";
+        document.documentElement.setAttribute("data-theme", savedTheme);
+    } catch (e) {
+        document.documentElement.setAttribute("data-theme", "dark");
+    }
 })();
 
-document.addEventListener("DOMContentLoaded", () => {
-    initBackgroundParticles();
-    initThemeToggle();
-    initSpotlightCards();
-    initCodeCopyButtons();
-    initRevealAnimations();
-});
+function initThemeEngine() {
+    try { initBackgroundParticles(); } catch (e) { console.warn("Particles warning:", e); }
+    try { initThemeToggle(); } catch (e) { console.warn("Theme toggle warning:", e); }
+    try { initSpotlightCards(); } catch (e) { console.warn("Spotlight warning:", e); }
+    try { initCodeCopyButtons(); } catch (e) { console.warn("Code copy warning:", e); }
+    try { initRevealAnimations(); } catch (e) { console.warn("Reveal animation warning:", e); }
+}
+
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initThemeEngine);
+} else {
+    initThemeEngine();
+}
 
 // ==========================================
 // THEME SWITCHER (Dark / Light Mode)

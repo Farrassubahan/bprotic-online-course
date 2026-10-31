@@ -174,51 +174,52 @@
         let currentFramework = "react-native";
         let activeWeek = "1";
 
-        document.addEventListener("DOMContentLoaded", () => {
-            const weekSelector = document.getElementById("weekSelector");
-            const btnReact = document.getElementById("btnReact");
-            const btnIonic = document.getElementById("btnIonic");
+        function renderMobileContent(weekId) {
+            if (typeof mobileData === "undefined" || !mobileData) {
+                console.error("mobileData is not loaded!");
+                return;
+            }
+            const fwData = mobileData[currentFramework];
+            if (!fwData || !fwData.weeks) return;
+            const data = fwData.weeks[weekId];
+            if (!data) return;
 
-            // Event Framework Switch
-            btnReact.addEventListener("click", () => switchFramework("react-native"));
-            btnIonic.addEventListener("click", () => switchFramework("ionic"));
+            // Update Header
+            const heroBadge = document.getElementById("heroBadge");
+            if (heroBadge) heroBadge.textContent = `Pertemuan ${weekId}`;
+            const heroTitle = document.getElementById("heroTitle");
+            if (heroTitle) heroTitle.textContent = data.title;
+            const heroSubtitle = document.getElementById("heroSubtitle");
+            if (heroSubtitle && data.subtitle) {
+                heroSubtitle.textContent = data.subtitle;
+            }
+            
+            const contentArea = document.getElementById("contentArea");
+            if (!contentArea) return;
 
-            // Initial Render
-            renderMobileContent(activeWeek);
+            contentArea.innerHTML = data.content || `
+                <div class="card bg-dark-lighter border-secondary p-4 p-md-5 text-center my-4 shadow-sm">
+                    <div class="p-3 bg-primary bg-opacity-10 text-primary rounded-circle d-inline-block mb-3" style="width: 70px; height: 70px; margin: 0 auto; display: flex; align-items: center; justify-content: center;">
+                        <i class="bi bi-clock-history fs-1" style="color: #a855f7;"></i>
+                    </div>
+                    <h3 class="text-white fw-bold mb-2">Pertemuan ${weekId}: ${data.title}</h3>
+                    <p class="text-light-50 fs-6 mb-4">${data.subtitle || "Materi sedang dalam proses penyusunan."}</p>
+                    <span class="badge bg-secondary px-3 py-2 rounded-pill mx-auto">Materi Praktikum Sedang Disiapkan</span>
+                </div>
+            `;
+            contentArea.style.opacity = "1";
 
-            weekSelector.addEventListener("change", (e) => {
-                const val = e.target.value;
-                const fwData = mobileData[currentFramework];
-                const weekInfo = fwData.weeks[val];
-                
-                if (weekInfo && weekInfo.content) {
-                    activeWeek = val;
-                    renderMobileContent(val);
-                } else {
-                    const weekTitle = weekInfo ? weekInfo.title : `Pertemuan ${val}`;
-                    const weekSub = weekInfo ? weekInfo.subtitle : 'Materi sedang dalam proses penyusunan.';
-                    const fwName = fwData.metadata.name;
-                    
-                    Swal.fire({
-                        icon: 'info',
-                        title: 'Segera Hadir!',
-                        html: `Materi untuk <b>Pertemuan ${val}: ${weekTitle}</b> (${fwName}) sedang dalam proses penyusunan.<br><br><span class="text-info">${weekSub}</span><br><br>Stay tuned!`,
-                        confirmButtonText: 'Oke, Mengerti',
-                        confirmButtonColor: '#7c3aed',
-                        background: '#1e293b',
-                        color: '#f8fafc',
-                        showClass: {
-                            popup: 'animate__animated animate__zoomIn'
-                        },
-                        hideClass: {
-                            popup: 'animate__animated animate__zoomOut'
-                        }
-                    });
-                    
-                    weekSelector.value = activeWeek;
-                }
-            });
-        });
+            // Safely highlight code blocks
+            if (window.hljs) {
+                document.querySelectorAll('pre code').forEach((block) => {
+                    try {
+                        hljs.highlightElement(block);
+                    } catch (e) {
+                        console.warn("Highlight error:", e);
+                    }
+                });
+            }
+        }
 
         function switchFramework(fw) {
             currentFramework = fw;
@@ -230,16 +231,15 @@
                 }
             });
 
-            // Update dropdown labels
             updateDropdownLabels();
-
-            // Render current week
             renderMobileContent(activeWeek);
         }
 
         function updateDropdownLabels() {
             const weekSelector = document.getElementById("weekSelector");
+            if (!weekSelector || typeof mobileData === "undefined" || !mobileData) return;
             const fwData = mobileData[currentFramework];
+            if (!fwData || !fwData.weeks) return;
             
             for (let i = 1; i <= 10; i++) {
                 const opt = weekSelector.querySelector(`option[value="${i}"]`);
@@ -249,40 +249,55 @@
             }
         }
 
-        function renderMobileContent(weekId) {
-            const fwData = mobileData[currentFramework];
-            const data = fwData.weeks[weekId];
-            if (!data) return;
+        function initMobileApp() {
+            const weekSelector = document.getElementById("weekSelector");
+            const btnReact = document.getElementById("btnReact");
+            const btnIonic = document.getElementById("btnIonic");
 
-            // Update Header
-            document.getElementById("heroBadge").textContent = `Pertemuan ${weekId}`;
-            document.getElementById("heroTitle").textContent = data.title;
-            if (document.getElementById("heroSubtitle")) {
-                document.getElementById("heroSubtitle").textContent = data.subtitle;
-            }
-            
-            // Update Content dengan animasi fade
-            const contentArea = document.getElementById("contentArea");
-            contentArea.style.opacity = 0;
-            
-            setTimeout(() => {
-                contentArea.innerHTML = data.content || `
-                    <div class="text-center py-5">
-                        <i class="bi bi-clock-history fs-1 text-warning mb-3"></i>
-                        <h3 class="text-white fw-bold">Pertemuan ${weekId}: ${data.title}</h3>
-                        <p class="text-light-50">${data.subtitle}</p>
-                        <span class="badge bg-secondary p-2">Materi Praktik Sedang Disiapkan</span>
-                    </div>
-                `;
-                
-                // Highlight code blocks
-                document.querySelectorAll('pre code').forEach((block) => {
-                    hljs.highlightElement(block);
+            if (btnReact) btnReact.addEventListener("click", () => switchFramework("react-native"));
+            if (btnIonic) btnIonic.addEventListener("click", () => switchFramework("ionic"));
+
+            updateDropdownLabels();
+            renderMobileContent(activeWeek);
+
+            if (weekSelector) {
+                weekSelector.addEventListener("change", (e) => {
+                    const val = e.target.value;
+                    const fwData = typeof mobileData !== "undefined" && mobileData ? mobileData[currentFramework] : null;
+                    const weekInfo = fwData && fwData.weeks ? fwData.weeks[val] : null;
+                    
+                    if (weekInfo && weekInfo.content) {
+                        activeWeek = val;
+                        renderMobileContent(val);
+                    } else {
+                        const weekTitle = weekInfo ? weekInfo.title : `Pertemuan ${val}`;
+                        const weekSub = weekInfo ? weekInfo.subtitle : 'Materi sedang dalam proses penyusunan.';
+                        const fwName = fwData && fwData.metadata ? fwData.metadata.name : 'Mobile';
+                        
+                        if (window.Swal) {
+                            Swal.fire({
+                                icon: 'info',
+                                title: 'Segera Hadir!',
+                                html: `Materi untuk <b>Pertemuan ${val}: ${weekTitle}</b> (${fwName}) sedang dalam proses penyusunan.<br><br><span class="text-info">${weekSub}</span><br><br>Stay tuned!`,
+                                confirmButtonText: 'Oke, Mengerti',
+                                confirmButtonColor: '#7c3aed',
+                                background: '#1e293b',
+                                color: '#f8fafc',
+                                showClass: { popup: 'animate__animated animate__zoomIn' },
+                                hideClass: { popup: 'animate__animated animate__zoomOut' }
+                            });
+                        }
+                        
+                        weekSelector.value = activeWeek;
+                    }
                 });
-                
-                contentArea.style.opacity = 1;
-                contentArea.style.transition = "opacity 0.4s ease-in-out";
-            }, 180);
+            }
+        }
+
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", initMobileApp);
+        } else {
+            initMobileApp();
         }
     </script>
 </body>

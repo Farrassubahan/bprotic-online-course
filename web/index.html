@@ -112,91 +112,112 @@
     <!-- Data & Web Engine -->
     <script src="data.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
+        function renderWebContent(weekId) {
+            if (typeof courseData === "undefined" || !courseData) {
+                console.error("courseData is not loaded!");
+                return;
+            }
+            const data = courseData[weekId];
+            if (!data) return;
+
+            // Update Header
+            const heroBadge = document.getElementById("heroBadge");
+            if (heroBadge) heroBadge.textContent = `Pertemuan ${weekId}`;
+            const heroTitle = document.getElementById("heroTitle");
+            if (heroTitle) heroTitle.textContent = data.title;
+            const heroSubtitle = document.getElementById("heroSubtitle");
+            if (heroSubtitle) {
+                if (data.subtitle) {
+                    heroSubtitle.textContent = data.subtitle;
+                } else if (weekId === "1") {
+                    heroSubtitle.textContent = "Review tentang instalasi local server Laragon, sintaks dasar PHP, penggunaan variabel, output, array, serta perulangan sederhana.";
+                } else if (weekId === "2") {
+                    heroSubtitle.textContent = "Praktik pembuatan Form input HTML, $_POST, if/else, validasi, integrasi database MySQL via phpMyAdmin, dan operasi CRUD dasar.";
+                }
+            }
+            
+            const contentArea = document.getElementById("contentArea");
+            if (!contentArea) return;
+
+            contentArea.innerHTML = data.content || `
+                <div class="text-center py-5">
+                    <i class="bi bi-clock-history fs-1 text-info mb-3"></i>
+                    <h3 class="text-white fw-bold">Pertemuan ${weekId}: ${data.title}</h3>
+                    <p class="text-light-50">${data.subtitle || "Materi sedang disiapkan."}</p>
+                    <span class="badge bg-secondary p-2">Materi Praktik Sedang Disiapkan</span>
+                </div>
+            `;
+            contentArea.style.opacity = "1";
+
+            // Highlight code blocks safely
+            if (window.hljs) {
+                document.querySelectorAll('pre code').forEach((block) => {
+                    try {
+                        let lines = block.innerHTML.split('\n');
+                        let minIndent = Infinity;
+                        lines.forEach(l => {
+                            if(l.trim().length > 0 && !l.trim().startsWith('&lt;?php')) {
+                                let m = l.match(/^\s*/);
+                                if(m) minIndent = Math.min(minIndent, m[0].length);
+                            }
+                        });
+                        if (minIndent !== Infinity && minIndent > 0) {
+                            block.innerHTML = lines.map(l => {
+                                if(l.trim() === '&lt;?php' || l.trim() === '?&gt;') return l.trim();
+                                return l.startsWith(' '.repeat(minIndent)) ? l.substring(minIndent) : l;
+                            }).join('\n');
+                        }
+                        hljs.highlightElement(block);
+                    } catch (e) {
+                        console.warn("Highlight error:", e);
+                    }
+                });
+            }
+        }
+
+        function initWebApp() {
             const weekSelector = document.getElementById("weekSelector");
             let activeWeek = "1";
             
             // Initial Render
             renderWebContent("1");
 
-            weekSelector.addEventListener("change", (e) => {
-                const val = e.target.value;
-                const weekInfo = courseData[val];
-                
-                if (weekInfo && weekInfo.content) {
-                    activeWeek = val;
-                    renderWebContent(val);
-                } else {
-                    const weekTitle = weekInfo ? weekInfo.title : `Pertemuan ${val}`;
-                    const weekSub = weekInfo ? weekInfo.subtitle : 'Materi sedang dalam proses penyusunan.';
+            if (weekSelector) {
+                weekSelector.addEventListener("change", (e) => {
+                    const val = e.target.value;
+                    const weekInfo = typeof courseData !== "undefined" && courseData ? courseData[val] : null;
                     
-                    Swal.fire({
-                        icon: 'info',
-                        title: 'Segera Hadir!',
-                        html: `Materi untuk <b>Pertemuan ${val}: ${weekTitle}</b> sedang dalam proses penyusunan.<br><br><span class="text-info">${weekSub}</span><br><br>Stay tuned!`,
-                        confirmButtonText: 'Oke, Mengerti',
-                        confirmButtonColor: '#38bdf8',
-                        background: '#1e293b',
-                        color: '#f8fafc',
-                        showClass: {
-                            popup: 'animate__animated animate__zoomIn'
-                        },
-                        hideClass: {
-                            popup: 'animate__animated animate__zoomOut'
+                    if (weekInfo && weekInfo.content) {
+                        activeWeek = val;
+                        renderWebContent(val);
+                    } else {
+                        const weekTitle = weekInfo ? weekInfo.title : `Pertemuan ${val}`;
+                        const weekSub = weekInfo ? weekInfo.subtitle : 'Materi sedang dalam proses penyusunan.';
+                        
+                        if (window.Swal) {
+                            Swal.fire({
+                                icon: 'info',
+                                title: 'Segera Hadir!',
+                                html: `Materi untuk <b>Pertemuan ${val}: ${weekTitle}</b> sedang dalam proses penyusunan.<br><br><span class="text-info">${weekSub}</span><br><br>Stay tuned!`,
+                                confirmButtonText: 'Oke, Mengerti',
+                                confirmButtonColor: '#38bdf8',
+                                background: '#1e293b',
+                                color: '#f8fafc',
+                                showClass: { popup: 'animate__animated animate__zoomIn' },
+                                hideClass: { popup: 'animate__animated animate__zoomOut' }
+                            });
                         }
-                    });
-                    
-                    weekSelector.value = activeWeek;
-                }
-            });
-        });
-
-        function renderWebContent(weekId) {
-            const data = courseData[weekId];
-            if (!data) return;
-
-            // Update Header
-            document.getElementById("heroBadge").textContent = `Pertemuan ${weekId}`;
-            document.getElementById("heroTitle").textContent = data.title;
-            if (document.getElementById("heroSubtitle")) {
-                if (data.subtitle) {
-                    document.getElementById("heroSubtitle").textContent = data.subtitle;
-                } else if (weekId === "1") {
-                    document.getElementById("heroSubtitle").textContent = "Review tentang instalasi local server Laragon, sintaks dasar PHP, penggunaan variabel, output, array, serta perulangan sederhana.";
-                } else if (weekId === "2") {
-                    document.getElementById("heroSubtitle").textContent = "Praktik pembuatan Form input HTML, $_POST, if/else, validasi, integrasi database MySQL via phpMyAdmin, dan operasi CRUD dasar.";
-                }
-            }
-            
-            // Update Content dengan animasi fade
-            const contentArea = document.getElementById("contentArea");
-            contentArea.style.opacity = 0;
-            
-            setTimeout(() => {
-                contentArea.innerHTML = data.content;
-                
-                // Highlight code blocks
-                document.querySelectorAll('pre code').forEach((block) => {
-                    let lines = block.innerHTML.split('\n');
-                    let minIndent = Infinity;
-                    lines.forEach(l => {
-                        if(l.trim().length > 0 && !l.trim().startsWith('&lt;?php')) {
-                            let m = l.match(/^\s*/);
-                            if(m) minIndent = Math.min(minIndent, m[0].length);
-                        }
-                    });
-                    if (minIndent !== Infinity && minIndent > 0) {
-                        block.innerHTML = lines.map(l => {
-                            if(l.trim() === '&lt;?php' || l.trim() === '?&gt;') return l.trim();
-                            return l.startsWith(' '.repeat(minIndent)) ? l.substring(minIndent) : l;
-                        }).join('\n');
+                        
+                        weekSelector.value = activeWeek;
                     }
-                    hljs.highlightElement(block);
                 });
-                
-                contentArea.style.opacity = 1;
-                contentArea.style.transition = "opacity 0.4s ease-in-out";
-            }, 180);
+            }
+        }
+
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", initWebApp);
+        } else {
+            initWebApp();
         }
     </script>
 </body>
