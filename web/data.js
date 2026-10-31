@@ -1,4 +1,4 @@
-const courseData = {
+.const courseData = {
     "1": {
         title: "Recap Setup & Dasar PHP",
         content: `
